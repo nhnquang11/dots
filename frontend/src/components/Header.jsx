@@ -16,7 +16,7 @@ const Header = () => {
         </div>
 
         {/* Search bar */}
-        <div className="max-w-lg grow flex justify-center align-center">
+        <div className="max-w-lg grow flex justify-center items-center">
           <input
             type="search"
             className="w-full font-serif font-hairline text-sm rounded border border-gray-400 placeholder-gray-500 bg-transparent px-3 py-1 transition duration-200 ease-in-out focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
@@ -38,7 +38,7 @@ const Header = () => {
                 <a href="" className="px-6 hover:text-gray-950">Profile</a>
                 <a href="" className="px-6 hover:text-gray-950">Dashboard</a>
               </div>
-              <hr className="" />
+              <hr />
               <div className="flex flex-col py-4">
                 <a href="" className="px-6 hover:text-gray-950">Sign Out</a>
               </div>
