@@ -41,7 +41,7 @@ const Header = () => {
               </div>
               <hr />
               <div className="flex flex-col py-4">
-                <a href="" className="px-6 hover:text-neutral-950">Sign Out</a>
+                <a href="" className="px-6 hover:text-neutral-950">Sign out</a>
               </div>
             </div>
           }
