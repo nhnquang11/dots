@@ -4,7 +4,6 @@ import BlogCard from "./BlogCard"
 const BlogSection = () => {
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false)
-
   const handleSortOnClick = () => {
     if (isFilterDropdownOpen) setIsFilterDropdownOpen(false);
     setIsSortDropdownOpen(!isSortDropdownOpen)
