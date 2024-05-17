@@ -25,7 +25,7 @@ const BlogSection = () => {
   return (
     <div className="flex flex-col items-center mt-16 lg:mt-20">
       <div className="flex justify-between items-center gap-x-2">
-        <div className="pl-3 pr-6 font-serif text-neutral-900">6 articles</div>
+        <div className="pl-3 pr-6 font-serif text-neutral-900">6 stories</div>
 
         {/* Filter */}
         <div className="relative">
