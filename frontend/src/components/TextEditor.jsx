@@ -1,14 +1,15 @@
 
-import { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 
-const TextEditor = () => {
-  const [value, setValue] = useState('');
+const TextEditor = ({ setContent }) => {
+  const handleQuillOnChange = (content) => {
+    setContent(content);
+  }
   return (
     <div className='flex justify-center mb-12'>
-      <ReactQuill className='w-full max-w-xl sm:max-w-2xl min-h-48 sm:min-h-96' theme="snow" value={value} onChange={setValue} />
+      <ReactQuill className='w-full max-w-xl sm:max-w-2xl min-h-48 sm:min-h-96' theme="snow" onChange={handleQuillOnChange} />
     </div>
   );
 }
