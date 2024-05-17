@@ -1,4 +1,5 @@
 import { useState } from "react"
+import logo from "../assets/dots.png"
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -12,7 +13,7 @@ const Header = () => {
       <div className="flex gap-5 justify-around my-4 px-5 max-w-[2160px] mx-auto">
         {/* Logo */}
         <div>
-          <a href="/" className="font-serif text-xl font-bold text-neutral-950">Dots</a>
+          <a href="/" className="flex items-center gap-1 font-serif text-xl font-bold text-neutral-950"><img src={logo} className="inline w-7 h-7" /></a>
         </div>
 
         {/* Search bar */}
