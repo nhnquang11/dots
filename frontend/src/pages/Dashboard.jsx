@@ -1,6 +1,11 @@
+import Stats from "../components/Stats"
+
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+      Dashboard
+      <Stats />
+    </div>
   )
 }
 
