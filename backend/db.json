@@ -47,7 +47,7 @@
       "createdAt": "2020-01-01"
     }
   ],
-  "tags": [
+  "topics": [
     {
       "id": "1",
       "name": "tag1",
