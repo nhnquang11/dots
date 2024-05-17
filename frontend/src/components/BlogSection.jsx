@@ -41,7 +41,7 @@ const BlogSection = () => {
                   <legend className="font-serif pt-2 pb-3 text-neutral-500">Topic</legend>
                   <div className="py-3 flex items-center">
                     <input className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" id="topic-typology" type="checkbox" />
-                    <label className="pl-3 font-serif cursor-pointer" htmlFor="topic-psychology">Typology</label>
+                    <label className="pl-3 font-serif cursor-pointer" htmlFor="topic-typology">Typology</label>
                   </div>
                   <div className="py-3 flex items-center">
                     <input className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" id="topic-drawing" type="checkbox" />

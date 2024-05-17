@@ -12,7 +12,7 @@ const Header = () => {
       <div className="flex gap-5 justify-around my-4 px-5">
         {/* Logo */}
         <div>
-          <a href="#" className="font-serif text-xl font-bold text-neutral-950">Dots</a>
+          <a href="/" className="font-serif text-xl font-bold text-neutral-950">Dots</a>
         </div>
 
         {/* Search bar */}
@@ -35,8 +35,9 @@ const Header = () => {
             isDropdownOpen &&
             <div className="flex flex-col absolute w-48 bg-neutral-50 shadow-sm text-sm rounded border right-0 top-9 font-serif font-extralight text-neutral-500">
               <div className="flex flex-col py-4 gap-4">
-                <a href="" className="px-6 hover:text-neutral-950">Profile</a>
-                <a href="" className="px-6 hover:text-neutral-950">Dashboard</a>
+                <a href="/profile" className="px-6 hover:text-neutral-950">Profile</a>
+                <a href="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</a>
+                <a href="/new-story" className="px-6 hover:text-neutral-950">Write</a>
               </div>
               <hr />
               <div className="flex flex-col py-4">
