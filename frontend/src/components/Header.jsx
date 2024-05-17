@@ -9,7 +9,7 @@ const Header = () => {
 
   return (
     <nav>
-      <div className="flex gap-5 justify-around my-4 px-5">
+      <div className="flex gap-5 justify-around my-4 px-5 max-w-[2160px] mx-auto">
         {/* Logo */}
         <div>
           <a href="/" className="font-serif text-xl font-bold text-neutral-950">Dots</a>
