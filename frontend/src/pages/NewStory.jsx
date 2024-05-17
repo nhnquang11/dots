@@ -6,7 +6,7 @@ const NewStory = () => {
 
   return (
     <div className="flex flex-col justify-center px-3">
-      <h2 className="mt-16 mb-12 text-5xl font-serif text-center">Write a story</h2>
+      <h2 className="mt-16 mb-12 text-5xl font-bold font-serif text-center">Write a story</h2>
       <div>
         <input className="mb-5 block m-auto w-full max-w-xl sm:max-w-2xl font-serif font-hairline text-lg leading-9 rounded border border-neutral-400 placeholder-neutral-500 bg-transparent px-3 py-1 transition duration-200 ease-in-out focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
           placeholder="Title"
