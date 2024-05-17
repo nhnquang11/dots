@@ -1,8 +1,8 @@
 const BlogCard = () => {
   return (
     <div className="max-w-2xl">
-      <div>
-        <img className="rounded-lg aspect-video object-cover" src="https://images.ctfassets.net/kftzwdyauwt9/6FFDUhM1G4L7yaETOVhMSF/801042f92d5c9de0e872fbf3f1959cfd/partnership-with-american-journalism-project-to-support-local-news.jpg?w=1200&q=90&fm=webp" />
+      <div className="overflow-hidden rounded-lg w-full aspect-video">
+        <img className="object-cover hover:scale-105 transition duration-500 cursor-pointer" src="https://images.ctfassets.net/kftzwdyauwt9/6FFDUhM1G4L7yaETOVhMSF/801042f92d5c9de0e872fbf3f1959cfd/partnership-with-american-journalism-project-to-support-local-news.jpg?w=1200&q=90&fm=webp" />
       </div>
       <article className="mt-3">
         <div className="flex items-center gap-x-4 text-xs">
