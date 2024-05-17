@@ -111,7 +111,7 @@ const BlogSection = () => {
         <BlogCard />
         <BlogCard />
       </div>
-      <button className="my-14 h-11 font-extralight text-sm font-serif px-5 rounded-full bg-neutral-900 text-white hover:bg-neutral-600 transition duration-200 ease-in-out">
+      <button className="my-14 h-11 font-extralight text-sm font-serif px-5 rounded bg-neutral-900 text-white hover:bg-neutral-600 transition duration-200 ease-in-out">
         Load more
       </button>
     </div >
