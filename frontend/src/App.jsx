@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import NewStory from "./pages/NewStory";
 import NotFound from "./pages/NotFound";
 import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/new-story" element={<NewStory />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-in" element={<SignIn />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
