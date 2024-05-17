@@ -1,11 +1,15 @@
+import Footer from "./components/Footer"
+import BlogSection from "./components/BlogSection"
 const App = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold">
+    <div className="bg-gray-50">
+      <h1 className="font-serif text-3xl font-bold">
         Dots
       </h1>
-      <p>A place where the mind dances.</p>
-    </>
+      <p className="font-serif">A place where the mind dances.</p>
+      <BlogSection />
+      <Footer />
+    </div>
   )
 }
 
