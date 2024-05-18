@@ -3,13 +3,9 @@ const express = require('express')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
+const User = require('./models/user.model')
 
-let topics = []
-let users = []
-let stories = []
-let comments = []
-
-mongoose.connect(config.MONGO_URI).then(() =>{
+mongoose.connect(config.MONGO_URI).then(() => {
   console.log('Connected to MongoDB');
 }).catch((error) => {
   console.log('Error connecting to MongoDB:', error.message);
@@ -19,56 +15,40 @@ const app = express()
 app.use(express.json())
 app.use(middleware.requestLogger)
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
-})
+app.post('/api/users', (request, response) => {
+  if (!request.body.name) {
+    request.body.name = request.body.username
+  }
 
-app.get('/api/topics', (request, response) => {
-  response.json(topics)
+  if  (!request.body.isAdmin) {
+    request.body.isAdmin = false
+  }
+  
+  const user = new User({
+    username: request.body.username,
+    name: request.body.name,
+    email: request.body.email,
+    passwordHash: request.body.passwordHash,
+    registrationDate: new Date(),
+    lastLogin: new Date(),
+    isAdmin: request.body.isAdmin
+  })
+
+  user.save().then(savedUser => {
+    response.json(savedUser)
+  }).catch(error => {
+    console.log('Error saving user:', error.name)
+    response.json(error)
+  })
 })
 
 app.get('/api/users', (request, response) => {
-  response.json(users)
+  User.find({}).then(users => {
+    response.json(users)
+  })
 })
-
-app.get('/api/stories', (request, response) => {
-  response.json(stories)
-})
-
-app.get('/api/comments', (request, response) => {
-  response.json(comments)
-})
-
-app.post('/api/topics', (request, response) => {
-  const topic = request.body
-  topics = topics.concat({topic, id: topics.length + 1})
-  response.json(topic)
-})
-
-app.post('/api/users', (request, response) => {
-  const user = request.body
-  users = users.concat({user, id: users.length + 1})
-  console.log('users', users)
-  response.json(user)
-})
-
-app.post('/api/stories', (request, response) => {
-  const story = request.body
-  stories = stories.concat({...story, id: stories.length + 1})
-  console.log('stories', stories)
-  response.json(story)
-})
-
-app.post('/api/comments', (request, response) => {
-  const comment = request.body
-  comments = comments.concat({...comment, id: comments.length + 1})
-  console.log('comments', comments)
-  response.json(comment)
-})
-
 
 app.use(middleware.unknownEndpoint)
-
 app.listen(config.PORT, () => {
   console.log(`Server running on port ${config.PORT}`)
 })
