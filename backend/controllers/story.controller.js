@@ -1,6 +1,6 @@
 const Story = require('../models/story.model')
 
-const createStory = (request, response) => {
+const createStory = async (request, response) => {
   const story = new Story({
     authorId: request.body.authorId,
     title: request.body.title,
@@ -15,49 +15,28 @@ const createStory = (request, response) => {
     comments: []
   })
 
-  story.save().then(savedStory => {
-    response.json(savedStory)
-  }).catch(error => {
-    console.log('Error saving story:', error.name)
-    response.json(error)
-  })
+  const savedStory = await story.save()
+  response.status(201).json(savedStory)
 }
 
-const getStories = (request, response) => {
-  Story.find({}).then(stories => {
-    response.json(stories)
-  }).catch(error => {
-    console.log('Error getting stories:', error.name)
-    response.json(error)
-  })
+const getStories = async (request, response) => {
+  const stories = await Story.find({})
+  response.status(200).json(stories)
 }
 
-const getStory = (request, response) => {
-  Story.findById(request.params.id).then(story => {
-    response.json(story)
-  }).catch(error => {
-    console.log('Error getting story:', error.name)
-    response.json(error)
-  })
+const getStory = async (request, response) => {
+  const story = await Story.findById(request.params.id)
+  response.status(200).json(story)
 }
 
-const updateStory = (request, response) => {
-  Story.findByIdAndUpdate(request.params.id, request
-    .body, { new: true }).then(updatedStory => {
-    response.json(updatedStory)
-  }).catch(error => {
-    console.log('Error updating story:', error.name)
-    response.json(error)
-  })
+const updateStory = async (request, response) => {
+    const updatedStory = await Story.findByIdAndUpdate(request.params.id, request.body, { new: true })
+    response.status(200).json(updatedStory)
 }
 
-const deleteStory = (request, response) => {
-  Story.findByIdAndDelete(request.params.id).then(deletedStory => {
-    response.json(deletedStory)
-  }).catch(error => {
-    console.log('Error deleting story:', error.name)
-    response.json(error)
-  })
+const deleteStory = async (request, response) => {
+  await Story.findByIdAndDelete(request.params.id)
+  response.status(204).end()
 }
 
 module.exports = {
