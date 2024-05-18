@@ -1,12 +1,21 @@
+require('dotenv').config()
 const express = require('express')
-const { t } = require('tar')
-const app = express()
+const mongoose = require('mongoose')
+
+const MONGO_URI = process.env.MONGO_URI
 
 let topics = []
 let users = []
 let stories = []
 let comments = []
 
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() =>{
+  console.log('Connected to MongoDB');
+}).catch((error) => {
+  console.log('Error connecting to MongoDB:', error.message);
+})
+
+const app = express()
 app.use(express.json())
 
 app.get('/', (request, response) => {
