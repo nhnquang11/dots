@@ -1,4 +1,5 @@
 const express = require('express')
+require('express-async-errors');
 const mongoose = require('mongoose')
 const config = require('./utils/config')
 const middleware = require('./utils/middleware')
@@ -23,5 +24,6 @@ app.use('/api/comments', commentRouter)
 app.use('/api/stories', storyRouter)
 
 app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app

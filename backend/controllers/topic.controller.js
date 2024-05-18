@@ -1,54 +1,37 @@
 const Topic = require('../models/topic.model')
 
-const createTopic = (request, response) => {
+// Post new topic
+const createTopic = async (request, response) => {
   const topic = new Topic({
     name: request.body.name,
     stories: []
   })
-
-  topic.save().then(savedTopic => {
-    response.json(savedTopic)
-  }).catch(error => {
-    console.log('Error saving topic:', error.name)
-    response.json(error)
-  })
+  const savedTopic = await topic.save()
+  response.status(201).json(savedTopic)
 }
 
-const getTopics = (request, response) => {
-  Topic.find({}).then(topics => {
-    response.json(topics)
-  }).catch(error => {
-    console.log('Error getting topics:', error.name)
-    response.json(error)
-  })
+// Find all
+const getTopics = async (request, response) => {
+  const topics = await Topic.find({})
+  response.status(200).json(topics)
 }
 
-const getTopic = (request, response) => {
-  Topic.findById(request.params.id).then(topic => {
-    response.json(topic)
-  }).catch(error => {
-    console.log('Error getting topic:', error.name)
-    response.json(error)
-  })
+// Find by Id
+const getTopic = async (request, response) => {
+  const topic = await Topic.findById(request.params.id)
+  response.status(200).json(topic)
 }
 
-const deleteTopic = (request, response) => {
-  Topic.findByIdAndDelete(request.params.id).then(deletedTopic => {
-    response.json(deletedTopic)
-  }).catch(error => {
-    console.log('Error deleting topic:', error.name)
-    response.json(error)
-  })
+// Delete by Id
+const deleteTopic = async (request, response) => {
+  await Topic.findByIdAndDelete(request.params.id)
+  response.status(204).end()
 }
 
-const updateTopic = (request, response) => {
-  Topic.findByIdAndUpdate(request.params.id, request.body, { new: true }).then(updatedTopic => {
-    response.json(updatedTopic)
-  }
-  ).catch(error => {
-    console.log('Error updating topic:', error.name)
-    response.json(error)
-  })
+// Update by Id
+const updateTopic = async (request, response) => {
+  const updatedTopic = await Topic.findByIdAndUpdate(request.params.id, request.body, { new: true })
+  response.status(200).json(updatedTopic)
 }
 
 module.exports = {
