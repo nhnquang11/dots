@@ -1,7 +1,7 @@
 
 const User = require('../models/user.model')
 
-const createUser = (request, response) => {
+const createUser = async (request, response) => {
   if (!request.body.name) {
     request.body.name = request.body.username
   }
@@ -20,18 +20,18 @@ const createUser = (request, response) => {
     isAdmin: request.body.isAdmin
   })
 
-  user.save().then(savedUser => {
-    response.json(savedUser)
-  }).catch(error => {
-    console.log('Error saving user:', error.name)
-    response.json(error)
-  })
+  const newUser = await user.save()
+  response.status(201).json(newUser)
 }
 
-const getUsers = (request, response) => {
-  User.find({}).then(users => {
-    response.json(users)
-  })
+const getUsers = async (request, response) => {
+  const users = await User.find({})
+  response.status(200).json(users)
+}
+
+const getUser = async (request, response) => {
+  const user = await User.findById(request.params.id)
+  response.status(200).json(user)
 }
 
 const deleteUser = (request, response) => {
@@ -59,6 +59,7 @@ const updateUser = (request, response) => {
 module.exports = {
   createUser,
   getUsers,
+  getUser,
   deleteUser, 
   updateUser
 }
