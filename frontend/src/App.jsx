@@ -7,6 +7,7 @@ import NewStory from "./pages/NewStory";
 import NotFound from "./pages/NotFound";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
+import Story from "./components/Story";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/new-story" element={<NewStory />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/story" element={<Story />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
