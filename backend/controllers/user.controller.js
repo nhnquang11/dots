@@ -34,7 +34,14 @@ const getUser = (request, response) => {
   })
 }
 
+const deleteUser = (request, response) => {
+  User.findByIdAndDelete(request.params.id).then(result => {
+    response.status(204).end()
+  })
+}
+
 module.exports = {
   createUser,
-  getUser
+  getUser,
+  deleteUser
 }
