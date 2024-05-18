@@ -41,7 +41,7 @@
     {
       "id": "1",
       "authorId": "1",
-      "postId": "1",
+      "storyId": "1",
       "content": "a comment about post 1",
       "likes": 100,
       "createdAt": "2020-01-01"
