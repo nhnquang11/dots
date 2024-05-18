@@ -2,7 +2,7 @@ const Story = require('../models/story.model')
 
 const createStory = async (request, response) => {
   const story = new Story({
-    authorId: request.body.authorId,
+    authorId: request.user.id,
     title: request.body.title,
     description: request.body.description,
     content: request.body.content,
