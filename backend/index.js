@@ -1,16 +1,15 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
-const morgan = require('morgan')
-
-const MONGO_URI = process.env.MONGO_URI
+const config = require('./utils/config')
+const middleware = require('./utils/middleware')
 
 let topics = []
 let users = []
 let stories = []
 let comments = []
 
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() =>{
+mongoose.connect(config.MONGO_URI).then(() =>{
   console.log('Connected to MongoDB');
 }).catch((error) => {
   console.log('Error connecting to MongoDB:', error.message);
@@ -18,8 +17,7 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const app = express()
 app.use(express.json())
-morgan.token('body', (request, response) => JSON.stringify(request.body));
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+app.use(middleware.requestLogger)
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -69,13 +67,8 @@ app.post('/api/comments', (request, response) => {
 })
 
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-app.use(unknownEndpoint)
+app.use(middleware.unknownEndpoint)
 
-
-const PORT = 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })
