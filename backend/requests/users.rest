@@ -16,3 +16,13 @@ Content-Type: application/json
   "email": "username2@example.com",
   "passwordHash": "username2"
 }
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "username": "username3",
+  "email": "username3@example.com",
+  "passwordHash": "username3"
+}
