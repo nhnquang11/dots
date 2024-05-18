@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 
 const MONGO_URI = process.env.MONGO_URI
 
@@ -17,6 +18,8 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const app = express()
 app.use(express.json())
+morgan.token('body', (request, response) => JSON.stringify(request.body));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -41,7 +44,6 @@ app.get('/api/comments', (request, response) => {
 app.post('/api/topics', (request, response) => {
   const topic = request.body
   topics = topics.concat({topic, id: topics.length + 1})
-  console.log('topics', topics)
   response.json(topic)
 })
 
