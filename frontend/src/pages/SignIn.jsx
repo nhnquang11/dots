@@ -54,7 +54,7 @@ const SignIn = () => {
             <div>
               <button
                 type="submit"
-                className="font-serif flex w-full justify-center rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="font-serif flex w-full justify-center rounded-md bg-neutral-50 border border-neutral-600 px-3 py-1.5 text-sm font-semibold leading-6 text-neutral-900 shadow-sm hover:bg-neutral-100 hover:border-neutral-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Log in
               </button>
@@ -62,7 +62,7 @@ const SignIn = () => {
           </form>
 
           <button
-            className="mt-5 font-serif flex w-full justify-center rounded-md bg-neutral-50 border border-neutral-300 px-3 py-1.5 text-sm font-semibold leading-6 text-neutral-900 shadow-sm hover:bg-neutral-100 hover:border-neutral-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            className="mt-5 font-serif flex w-full justify-center rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             Continue with Google
           </button>
