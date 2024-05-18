@@ -2,7 +2,7 @@ const Comment = require('../models/comment.model')
 
 const createComment = async (request, response) => {
   const comment = new Comment({
-    authorId: request.body.authorId,
+    authorId: request.user.id,
     storyId: request.body.storyId,
     content: request.body.content,
     createdAt: new Date(),
