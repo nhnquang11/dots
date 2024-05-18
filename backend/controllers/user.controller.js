@@ -1,23 +1,31 @@
 
+const bcrypt = require('bcrypt')
 const User = require('../models/user.model')
+const {validatePassword} = require('../utils/validate')
 
-const createUser = async (request, response) => {
-  if (!request.body.name) {
-    request.body.name = request.body.username
+const createUser = async (request, response, next) => {
+  let { username, name, email, password } = request.body
+
+  if (!name) {
+    name = username
   }
 
-  if  (!request.body.isAdmin) {
-    request.body.isAdmin = false
+  if (!password) {
+    return response.status(400).json({ error: 'Password is required.' })
   }
+  const passwordCheckResult = validatePassword(password)
+  if (!passwordCheckResult.valid) {
+    return response.status(400).json({ error: passwordCheckResult.message })
+  }
+
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
   
   const user = new User({
-    username: request.body.username,
-    name: request.body.name,
-    email: request.body.email,
-    passwordHash: request.body.passwordHash,
-    registrationDate: new Date(),
-    lastLogin: new Date(),
-    isAdmin: request.body.isAdmin
+    username,
+    name,
+    email,
+    passwordHash
   })
 
   const newUser = await user.save()
