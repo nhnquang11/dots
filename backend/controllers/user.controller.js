@@ -28,7 +28,7 @@ const createUser = (request, response) => {
   })
 }
 
-const getUser = (request, response) => {
+const getUsers = (request, response) => {
   User.find({}).then(users => {
     response.json(users)
   })
@@ -40,8 +40,25 @@ const deleteUser = (request, response) => {
   })
 }
 
+const updateUser = (request, response) => {
+  const user = {
+    username: request.body.username,
+    name: request.body.name,
+    email: request.body.email,
+    passwordHash: request.body.passwordHash,
+    registrationDate: new Date(),
+    lastLogin: new Date(),
+    isAdmin: request.body.isAdmin
+  }
+
+  User.findByIdAndUpdate(request.params.id, user, { new: true }).then(result => {
+    response.json(result)
+  })
+}
+
 module.exports = {
   createUser,
-  getUser,
-  deleteUser
+  getUsers,
+  deleteUser, 
+  updateUser
 }
