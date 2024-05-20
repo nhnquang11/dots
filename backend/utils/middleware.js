@@ -1,3 +1,4 @@
+const Analytic = require('../models/analytic.model')
 const jwt = require('jsonwebtoken')
 const config = require('./config')
 const morgan = require('morgan')
@@ -43,6 +44,15 @@ const userExtractor = (request, response, next) => {
   next()
 }
 
+const trafficUpdator = (request, response, next) => {
+  Analytic.findOne({}).then( analytic => {
+    analytic.count += 1
+    analytic.save()
+  })
+  next()
+}
+
+
 module.exports = {
-  unknownEndpoint, requestLogger, errorHandler, tokenExtractor, userExtractor
+  unknownEndpoint, requestLogger, errorHandler, tokenExtractor, userExtractor, trafficUpdator
 }

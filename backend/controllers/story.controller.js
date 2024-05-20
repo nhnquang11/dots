@@ -20,12 +20,12 @@ const createStory = async (request, response) => {
 }
 
 const getStories = async (request, response) => {
-  const stories = await Story.find({})
+  const stories = await Story.find({}).populate('topics')
   response.status(200).json(stories)
 }
 
 const getStory = async (request, response) => {
-  const story = await Story.findById(request.params.id)
+  const story = await Story.findById(request.params.id).populate('topics')
   response.status(200).json(story)
 }
 
