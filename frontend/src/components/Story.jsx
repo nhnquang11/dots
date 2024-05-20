@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import storyService from "../services/storyService";
 import StoryContent from "./StoryContent";
 import { dateFormat } from "../utils";
+import CommentSection from "./CommentSection";
 
 const Story = () => {
   const { id } = useParams();
@@ -34,7 +35,8 @@ const Story = () => {
         <img className="max-h-[612px] rounded w-full max-w-5xl object-cover" src={story.imageUrl} />
       </div>
       <StoryContent htmlContent={story.content} />
-      <div className="mb-24"></div>
+      <div className="mb-16"></div>
+      <CommentSection storyId={id} />
     </div>
   )
 }
