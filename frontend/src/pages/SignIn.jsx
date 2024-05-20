@@ -1,4 +1,5 @@
 import logo from '../assets/dots.png'
+import { Link } from 'react-router-dom'
 
 const SignIn = () => {
   return (
@@ -69,9 +70,9 @@ const SignIn = () => {
 
           <p className="font-serif mt-10 text-center text-sm text-neutral-500">
             Don&apos;t have an account?{' '}
-            <a href="/sign-up" className="ml-1 text-sm font-bold leading-6 text-neutral-600 hover:text-neutral-500">
+            <Link to="/sign-up" className="ml-1 text-sm font-bold leading-6 text-neutral-600 hover:text-neutral-500">
               Create new account
-            </a>
+            </Link>
           </p>
         </div>
       </div>

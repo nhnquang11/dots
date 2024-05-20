@@ -1,4 +1,5 @@
 import logo from '../assets/dots.png'
+import { Link } from 'react-router-dom'
 
 export default function SignUp() {
   return (
@@ -79,9 +80,9 @@ export default function SignUp() {
 
           <p className="font-serif mt-10 text-center text-sm text-gray-500">
             Already have an account?{' '}
-            <a href="/sign-in" className="ml-1 text-sm font-bold leading-6 text-neutral-600 hover:text-neutral-500">
+            <Link to="/sign-in" className="ml-1 text-sm font-bold leading-6 text-neutral-600 hover:text-neutral-500">
               Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>

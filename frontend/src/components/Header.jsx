@@ -1,5 +1,6 @@
 import { useState } from "react"
 import logo from "../assets/dots.png"
+import { Link } from "react-router-dom"
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -13,7 +14,7 @@ const Header = () => {
       <div className="flex gap-5 justify-around my-4 px-5 max-w-[2160px] mx-auto">
         {/* Logo */}
         <div>
-          <a href="/" className="flex items-center gap-1 font-serif text-xl font-bold text-neutral-950"><img src={logo} className="inline w-7 h-7" /></a>
+          <Link to="/" className="flex items-center gap-1 font-serif text-xl font-bold text-neutral-950"><img src={logo} className="inline w-7 h-7" /></Link>
         </div>
 
         {/* Search bar */}
@@ -36,13 +37,13 @@ const Header = () => {
             isDropdownOpen &&
             <div className="flex flex-col absolute w-48 bg-neutral-50 shadow-sm text-sm rounded border right-0 top-9 font-serif font-extralight text-neutral-500">
               <div className="flex flex-col py-4 gap-4">
-                <a href="/profile" className="px-6 hover:text-neutral-950">Profile</a>
-                <a href="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</a>
-                <a href="/new-story" className="px-6 hover:text-neutral-950">Write</a>
+                <Link to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
+                <Link to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
+                <Link to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
               </div>
               <hr />
               <div className="flex flex-col py-4">
-                <a href="" className="px-6 hover:text-neutral-950">Sign out</a>
+                <Link to="/" className="px-6 hover:text-neutral-950">Sign out</Link>
               </div>
             </div>
           }
