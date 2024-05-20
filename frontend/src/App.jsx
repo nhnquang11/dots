@@ -24,7 +24,7 @@ const App = () => {
         <Route path="/new-story" element={<NewStory />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/story" element={<Story />} />
+        <Route path="/story/:id" element={<Story />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

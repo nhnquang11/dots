@@ -47,7 +47,7 @@ const Header = () => {
         {/* Profile dropdown */}
         {
           user &&
-          <div className="relative">
+          <div className="relative z-10">
             <div className="flex justify-center align-center">
               <button type="button" onClick={handleDropdownOnClick}>
                 <img className="h-8 w-8 rounded-full object-cover" src={user.profilePic} />

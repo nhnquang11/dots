@@ -66,7 +66,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h3 className="mt-20 font-serif font-semibold text-4xl text-center px-2">Account Information</h3>
+      <h3 className="mt-20 font-serif font-semibold text-3xl sm:text-4xl text-center px-5">Account Information</h3>
 
       <div className="mt-12 mb-16">
 
