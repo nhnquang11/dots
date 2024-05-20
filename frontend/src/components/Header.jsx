@@ -39,7 +39,7 @@ const Header = () => {
 
         {
           !user &&
-          <Link to='sign-in' className="flex justify-center items-center h-8 text-xs font-semibold font-serif px-5 rounded bg-neutral-50 border-[1.2px] border-neutral-900 text-neutral-900 shadow-sm hover:bg-neutral-900 hover:text-neutral-50 transition duration-200 ease-in-out">
+          <Link to='sign-in' className="flex justify-center text-center items-center h-8 text-xs font-semibold font-serif px-5 rounded bg-neutral-50 border-[1.2px] border-neutral-900 text-neutral-900 shadow-sm hover:bg-neutral-900 hover:text-neutral-50 transition duration-200 ease-in-out">
             Log in
           </Link>
         }

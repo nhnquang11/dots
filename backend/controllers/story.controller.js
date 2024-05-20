@@ -11,7 +11,7 @@ const createStory = async (request, response) => {
     views: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
-    topics: [],
+    topics: request.body.topics ? request.body.topics : [],
     comments: []
   })
 

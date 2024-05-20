@@ -39,6 +39,7 @@ const getUsers = async (request, response) => {
 
 const getUser = async (request, response) => {
   const user = await User.findById(request.params.id)
+  console.log(user)
   response.status(200).json(user)
 }
 
@@ -53,10 +54,19 @@ const updateUser = (request, response) => {
     username: request.body.username,
     name: request.body.name,
     email: request.body.email,
-    passwordHash: request.body.passwordHash,
-    registrationDate: new Date(),
-    lastLogin: new Date(),
-    isAdmin: request.body.isAdmin
+    profilePic: request.body.profilePic
+  }
+
+  const password = request.body.password
+  if (password) {
+    const passwordCheckResult = validatePassword(password)
+    if (!passwordCheckResult.valid) {
+      return response.status(400).json({ error: passwordCheckResult.message })
+    }
+
+    const saltRounds = 10
+    const passwordHash = bcrypt.hashSync(password, saltRounds)
+    user.passwordHash = passwordHash
   }
 
   User.findByIdAndUpdate(request.params.id, user, { new: true }).then(result => {

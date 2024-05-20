@@ -25,7 +25,7 @@ const login = async (request, response) => {
 
   response
     .status(200)
-    .send({ token, username: user.username, name: user.name, profilePic: user.profilePic})
+    .send({ token, username: user.username, name: user.name, email: user.email, profilePic: user.profilePic, id: user._id.toString() })
 }
 
 module.exports = { login }
