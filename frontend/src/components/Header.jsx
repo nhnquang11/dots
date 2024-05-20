@@ -60,9 +60,9 @@ const Header = () => {
                 <div className="py-3 pl-6 flex justify-start items-center text-neutral-600 font-semibold">{user.name}</div>
                 <hr />
                 <div className="flex flex-col py-4 gap-4">
+                  <Link onClick={() => setIsDropdownOpen(false)} to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
                   <Link onClick={() => setIsDropdownOpen(false)} to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
                   <Link onClick={() => setIsDropdownOpen(false)} to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
-                  <Link onClick={() => setIsDropdownOpen(false)} to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
                 </div>
                 <hr />
                 <div className="flex flex-col py-4 items-start">

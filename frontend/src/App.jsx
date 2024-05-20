@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Story from "./components/Story";
+import Profile from "./pages/Profile";
 import { useSelector } from "react-redux";
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/new-story" element={<NewStory />} />
         <Route path="/sign-up" element={<SignUp />} />
