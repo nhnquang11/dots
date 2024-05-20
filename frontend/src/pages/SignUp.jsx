@@ -1,7 +1,38 @@
 import logo from '../assets/dots.png'
 import { Link } from 'react-router-dom'
+import { useField } from '../hooks'
+import { setUser } from '../reducers/userReducer'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import userService from '../services/userService'
 
 export default function SignUp() {
+  const email = useField('email')
+  const password = useField('password')
+  const username = useField('text')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const signUp = async (e) => {
+    e.preventDefault()
+    const newUser = await userService.create({
+      email: email.value,
+      password: password.value,
+      username: username.value
+    })
+    dispatch(setUser(newUser))
+    navigate('/')
+    email.reset()
+    password.reset()
+    username.reset()
+  }
+
+  const getAttributes = (field) => {
+    const { reset, ...attributes } = field
+    return attributes
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -17,16 +48,16 @@ export default function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={signUp}>
             <div>
               <label htmlFor="username" className="font-serif block text-sm font-medium leading-6 text-neutral-900">
                 Username
               </label>
               <div className="mt-2">
                 <input
+                  {...getAttributes(username)}
                   id="username"
                   name="username"
-                  type="text"
                   autoComplete="email"
                   required
                   className="font-serif px-3 py-2 block w-full bg-neutral-50 rounded-md border-0  text-neutral-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-neutral-500 focus:ring-inset sm:text-sm sm:leading-6"
@@ -40,9 +71,9 @@ export default function SignUp() {
               </label>
               <div className="mt-2">
                 <input
+                  {...getAttributes(email)}
                   id="email"
                   name="email"
-                  type="email"
                   autoComplete="email"
                   required
                   className="font-serif px-3 py-2 block w-full bg-neutral-50 rounded-md border-0  text-neutral-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-neutral-500 focus:ring-inset sm:text-sm sm:leading-6"
@@ -58,9 +89,9 @@ export default function SignUp() {
               </div>
               <div className="mt-2">
                 <input
+                  {...getAttributes(password)}
                   id="password"
                   name="password"
-                  type="password"
                   autoComplete="password"
                   required
                   className="font-serif px-3 py-2 block w-full bg-neutral-50 rounded-md border-0  text-neutral-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-neutral-500 focus:ring-inset sm:text-sm sm:leading-6"
@@ -81,7 +112,7 @@ export default function SignUp() {
           <p className="font-serif mt-10 text-center text-sm text-gray-500">
             Already have an account?{' '}
             <Link to="/sign-in" className="ml-1 text-sm font-bold leading-6 text-neutral-600 hover:text-neutral-500">
-              Sign in
+              Log in
             </Link>
           </p>
         </div>

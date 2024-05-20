@@ -3,11 +3,13 @@ import logo from "../assets/dots.png"
 import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { signOut } from "../reducers/userReducer"
+import { useNavigate } from "react-router-dom"
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleDropdownOnClick = () => {
     setIsDropdownOpen(!isDropdownOpen)
@@ -16,6 +18,7 @@ const Header = () => {
   const handleSignOut = () => {
     dispatch(signOut())
     setIsDropdownOpen(false)
+    navigate('/')
   }
 
   return (
@@ -54,10 +57,12 @@ const Header = () => {
             {
               isDropdownOpen &&
               <div className="flex flex-col absolute w-48 bg-neutral-50 shadow-sm text-sm rounded border right-0 top-9 font-serif font-extralight text-neutral-500">
+                <div className="py-3 pl-6 flex justify-start items-center text-neutral-600 font-semibold">{user.name}</div>
+                <hr />
                 <div className="flex flex-col py-4 gap-4">
-                  <Link to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
-                  <Link to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
-                  <Link to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
+                  <Link onClick={() => setIsDropdownOpen(false)} to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
+                  <Link onClick={() => setIsDropdownOpen(false)} to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
+                  <Link onClick={() => setIsDropdownOpen(false)} to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
                 </div>
                 <hr />
                 <div className="flex flex-col py-4 items-start">

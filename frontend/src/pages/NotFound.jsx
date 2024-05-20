@@ -12,7 +12,7 @@ export default function NotFound() {
             <Link to="/" className="flex items-center my-14 h-11 font-extralight text-sm font-serif px-5 rounded bg-neutral-900 text-white hover:bg-neutral-600 transition duration-200 ease-in-out">
               Go back home
             </Link>
-            <a href="#" className="font-serif text-sm font-semibold hover:text-neutral-600 text-neutral-900">
+            <a href="mailto:nhnquang11@gmail.com" className="font-serif text-sm font-semibold hover:text-neutral-600 text-neutral-900">
               Contact support <span aria-hidden="true">&rarr;</span>
             </a>
           </div>
