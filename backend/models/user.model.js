@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: [/\S+@\S+\.\S+/, 'Please use a valid email address']
   },
+  profilePic: {
+    type: String,
+    default: 'https://res.cloudinary.com/dlzqcowpo/image/upload/v1716184426/dots/oge8kkmvzsy9r6maonga.webp'
+  },
   passwordHash: {
     type: String,
     required: true
