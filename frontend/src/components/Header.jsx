@@ -1,12 +1,21 @@
 import { useState } from "react"
 import logo from "../assets/dots.png"
 import { Link } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { signOut } from "../reducers/userReducer"
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
 
   const handleDropdownOnClick = () => {
     setIsDropdownOpen(!isDropdownOpen)
+  }
+
+  const handleSignOut = () => {
+    dispatch(signOut())
+    setIsDropdownOpen(false)
   }
 
   return (
@@ -25,29 +34,39 @@ const Header = () => {
             placeholder="Search" />
         </div>
 
-        {/* Profile dropdown */}
-        <div className="relative">
-          <div className="flex justify-center align-center">
-            <button type="button" onClick={handleDropdownOnClick}>
-              <img className="h-8 w-8 rounded-full object-cover" src="https://huggingface.co/KappaNeuro/director-darren-aronofsky-style/resolve/main/2345259.jpeg" />
-            </button>
-          </div>
+        {
+          !user &&
+          <Link to='sign-in' className="flex justify-center items-center h-8 text-xs font-semibold font-serif px-5 rounded bg-neutral-50 border-[1.2px] border-neutral-900 text-neutral-900 shadow-sm hover:bg-neutral-900 hover:text-neutral-50 transition duration-200 ease-in-out">
+            Log in
+          </Link>
+        }
 
-          {
-            isDropdownOpen &&
-            <div className="flex flex-col absolute w-48 bg-neutral-50 shadow-sm text-sm rounded border right-0 top-9 font-serif font-extralight text-neutral-500">
-              <div className="flex flex-col py-4 gap-4">
-                <Link to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
-                <Link to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
-                <Link to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
-              </div>
-              <hr />
-              <div className="flex flex-col py-4">
-                <Link to="/" className="px-6 hover:text-neutral-950">Sign out</Link>
-              </div>
+        {/* Profile dropdown */}
+        {
+          user &&
+          <div className="relative">
+            <div className="flex justify-center align-center">
+              <button type="button" onClick={handleDropdownOnClick}>
+                <img className="h-8 w-8 rounded-full object-cover" src={user.profilePic} />
+              </button>
             </div>
-          }
-        </div>
+
+            {
+              isDropdownOpen &&
+              <div className="flex flex-col absolute w-48 bg-neutral-50 shadow-sm text-sm rounded border right-0 top-9 font-serif font-extralight text-neutral-500">
+                <div className="flex flex-col py-4 gap-4">
+                  <Link to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
+                  <Link to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
+                  <Link to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
+                </div>
+                <hr />
+                <div className="flex flex-col py-4 items-start">
+                  <button onClick={handleSignOut} to="/" className="px-6 hover:text-neutral-950">Sign out</button>
+                </div>
+              </div>
+            }
+          </div>
+        }
       </div>
       <hr />
     </nav>

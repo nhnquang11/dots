@@ -1,22 +1,31 @@
 import logo from '../assets/dots.png'
 import { Link } from 'react-router-dom'
 import { useField } from '../hooks'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const SignIn = () => {
   const email = useField('email')
   const password = useField('password')
+  const user = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  console.log('user', user)
 
   const logIn = async (e) => {
     e.preventDefault()
     console.log(email.value)
     console.log(password.value)
-    await axios.post('http://localhost:3001/api/login', {
+    const response = await axios.post('http://localhost:3001/api/login', {
       email: email.value,
       password: password.value
-    }).then(response => {
-      console.log(response.data)
     })
+    dispatch(setUser(response.data))
+    console.log(response.data)
+    navigate('/')
     // email.reset()
     // password.reset()
     console.log('Logging in')

@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   },
   profilePic: {
     type: String,
-    default: 'https://res.cloudinary.com/dlzqcowpo/image/upload/v1716184426/dots/oge8kkmvzsy9r6maonga.webp'
+    default: 'https://res.cloudinary.com/dlzqcowpo/image/upload/v1716187185/dots/gtjhzcz5c2tzzmt5wow1.jpg'
   },
   passwordHash: {
     type: String,
