@@ -33,7 +33,6 @@ const EditStory = () => {
       title.setValue(data.title)
       description.setValue(data.description)
       setOriginalImageUrl(data.imageUrl)
-      console.log(data)
       setTopicsChosen(data.topics)
     })
   }, [])

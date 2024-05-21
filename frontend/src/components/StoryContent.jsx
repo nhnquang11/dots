@@ -1,12 +1,7 @@
 import 'tailwindcss/tailwind.css';
 import parse, { domToReact } from 'html-react-parser';
-import { useEffect } from 'react';
 
 const StoryContent = ({ htmlContent }) => {
-  useEffect(() => {
-    console.log(htmlContent);
-  }, [])
-
   const options = {
     replace: (domNode) => {
       if (domNode.name === 'h1') {

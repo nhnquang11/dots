@@ -21,7 +21,7 @@ const Notification = ({ message, type }) => {
   }
 
   return (
-    <div>
+    <div className="relative z-50">
       <div className={style}>
         <svg onClick={close} className="pointer-cursor w-4 h-4 absolute right-2 top-2" role="button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />

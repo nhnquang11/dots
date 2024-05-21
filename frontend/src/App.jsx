@@ -11,6 +11,7 @@ import Story from "./components/Story";
 import Profile from "./pages/Profile";
 import { useSelector } from "react-redux";
 import EditStory from "./pages/EditStory";
+import OhNo from "./pages/OhNo";
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -21,7 +22,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={user ? <Profile /> : <Navigate replace to='/sign-in' />} />
-        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate replace to='/sign-in' />} />
+        <Route path="/dashboard" element={user && user.isAdmin ? <Dashboard /> : user && (!user.isAdmin) ? <OhNo /> : <Navigate replace to='/sign-in' />} />
         <Route path="/new-story" element={user ? <NewStory /> : <Navigate replace to='/sign-in' />} />
         <Route path="/edit-story/:id" element={user ? <EditStory /> : <Navigate replace to='/sign-in' />} />
         <Route path="/sign-up" element={user ? <Navigate replace to='/' /> : <SignUp />} />

@@ -5,6 +5,7 @@ import { useField } from "../hooks"
 import uploadService from "../services/uploadService"
 import { updateUser } from "../reducers/userReducer"
 import { useDispatch } from "react-redux"
+import Notification from "../components/Notification"
 
 const Profile = () => {
   const user = useSelector(state => state.user)
@@ -17,6 +18,8 @@ const Profile = () => {
   const dispatch = useDispatch()
   const [updating, setUpdating] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   const uploadImage = (e) => {
     setTempPic(e.target.files[0])
@@ -56,19 +59,28 @@ const Profile = () => {
       setTimeout(() => {
         setShowSuccess(false)
       }, 5000)
+    }).catch((error) => {
+      setErrorMessage(error.response.data.error)
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
+      setUpdating(false)
     })
   }
 
   return (
-    <div>
+    <div className="z-40">
+      {errorMessage && <Notification message={errorMessage} type="error" />}
       <h3 className="mt-20 font-serif font-semibold text-3xl sm:text-4xl text-center px-5">Account Information</h3>
-
       <div className="mt-12 mb-16">
-
         <div className="flex items-center justify-center">
           <input id="profile-pic" hidden type="file" accept="image/*" onChange={uploadImage} />
           <label htmlFor="profile-pic" className="relative cursor-pointer">
-            <img src={profilePic.value} className="border-[1.5px] border-neutral-600 p-[1.5px] rounded-full w-32 h-32 object-cover cursor-pointer" alt=""></img>
+            <img src={profilePic.value} className="z-20 border-[1.5px] border-neutral-600 p-[1.5px] rounded-full w-32 h-32 object-cover cursor-pointer" alt=""></img>
             <div className="font-serif text-xs text-neutral-50 opacity-0 bg-black hover:opacity-90 hover:bg-opacity-40 rounded-full absolute flex justify-center items-center w-32 h-32 top-0 right-0 transition ease-in-out duration-100">Upload image</div>
           </label>
         </div>

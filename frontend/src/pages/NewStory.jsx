@@ -73,7 +73,7 @@ const NewStory = () => {
           placeholder="Description"
         />
         <div className="mb-5 flex items-center m-auto w-full max-w-xl sm:max-w-2xl">
-          <input id="image-input" hidden type="file" accept="image/*" onChange={(e) => { setSelectedFile(e.target.files[0].name); setPreview(e.target.files[0]); console.log(e.target.files[0]); }} />
+          <input id="image-input" hidden type="file" accept="image/*" onChange={(e) => { setSelectedFile(e.target.files[0].name); setPreview(e.target.files[0]); }} />
           <label
             htmlFor="image-input"
             className="text-center px-5 transition duration-200 ease-in-out leading-6 font-serif font-medium mr-4 py-2 rounded border-0 text-sm bg-neutral-900 text-white hover:bg-neutral-700 cursor-pointer"

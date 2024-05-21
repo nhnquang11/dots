@@ -4,8 +4,9 @@ import { useField } from '../hooks'
 import { setUser } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import userService from '../services/userService'
+import Notification from '../components/Notification'
+import { useState } from 'react'
 
 export default function SignUp() {
   const email = useField('email')
@@ -13,29 +14,38 @@ export default function SignUp() {
   const username = useField('text')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   const signUp = async (e) => {
     e.preventDefault()
-    const newUser = await userService.create({
-      email: email.value,
-      password: password.value,
-      username: username.value
-    })
-    dispatch(setUser(newUser))
-    navigate('/')
-    email.reset()
-    password.reset()
-    username.reset()
-  }
-
-  const getAttributes = (field) => {
-    const { reset, ...attributes } = field
-    return attributes
+    try {
+      const newUser = await userService.create({
+        email: email.value,
+        password: password.value,
+        username: username.value
+      })
+      dispatch(setUser(newUser))
+      navigate('/')
+      email.reset()
+      password.reset()
+      username.reset()
+    } catch (error) {
+      setErrorMessage(error.response.data.error)
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
+    }
   }
 
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        {errorMessage && <Notification message={errorMessage} type="error" />}
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-16 w-auto"
@@ -55,7 +65,7 @@ export default function SignUp() {
               </label>
               <div className="mt-2">
                 <input
-                  {...getAttributes(username)}
+                  {...username.getAttributes()}
                   id="username"
                   name="username"
                   autoComplete="email"
@@ -71,7 +81,7 @@ export default function SignUp() {
               </label>
               <div className="mt-2">
                 <input
-                  {...getAttributes(email)}
+                  {...email.getAttributes()}
                   id="email"
                   name="email"
                   autoComplete="email"
@@ -89,7 +99,7 @@ export default function SignUp() {
               </div>
               <div className="mt-2">
                 <input
-                  {...getAttributes(password)}
+                  {...password.getAttributes()}
                   id="password"
                   name="password"
                   autoComplete="password"

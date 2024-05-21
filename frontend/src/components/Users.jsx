@@ -14,7 +14,6 @@ const Users = () => {
 
   useEffect(() => {
     userSevice.getAll().then((data) => {
-      console.log(data)
       setUsers(data.sort(newestToOldest))
     })
   }, [])

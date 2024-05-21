@@ -30,7 +30,7 @@ const SignIn = () => {
       email.reset()
       password.reset()
     } catch (error) {
-      setErrorMessage("Wrong email or password! Please try again.")
+      setErrorMessage(error.response.data.error)
       if (timeoutId) {
         clearTimeout(timeoutId)
       }
@@ -39,11 +39,6 @@ const SignIn = () => {
         setTimeoutId(null)
       }, 5000))
     }
-  }
-
-  const getAttributes = (field) => {
-    const { reset, ...attributes } = field
-    return attributes
   }
 
   const handleGoogleSignIn = async () => {
@@ -84,7 +79,7 @@ const SignIn = () => {
               </label>
               <div className="mt-2">
                 <input
-                  {...getAttributes(email)}
+                  {...email.getAttributes()}
                   id="email"
                   name="email"
                   autoComplete="email"
@@ -103,7 +98,7 @@ const SignIn = () => {
               </div>
               <div className="mt-2">
                 <input
-                  {...getAttributes(password)}
+                  {...password.getAttributes()}
                   id="password"
                   name="password"
                   autoComplete="password"

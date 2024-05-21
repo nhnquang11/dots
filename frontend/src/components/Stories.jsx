@@ -32,7 +32,6 @@ const Stories = () => {
   }
 
   const deleteStory = (id) => {
-    console.log('delete story', id)
     storyService.remove(id).then(() => {
       setStories(stories.filter(story => story.id !== id))
     })

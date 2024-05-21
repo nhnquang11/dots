@@ -22,7 +22,6 @@ const Overview = () => {
       setTraffic(data.count)
     })
     commentService.getAll().then((data) => {
-      console.log(data)
       setComments(data.sort(newestToOldest))
     })
   }, [])
