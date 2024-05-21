@@ -65,6 +65,7 @@ const Overview = () => {
 
       {/* Stories and comments */}
       <div className="mt-3 grid grid-cols-1 lg:grid-cols-2 rounded-lg gap-x-2 gap-y-3">
+        {/* Recent stories */}
         <div className="px-6 py-6 border rounded shadow-sm hover:shadow-lg">
           <div className="font-serif text-sm text-neutral-500">Recent stories</div>
           <div className="mt-3 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
@@ -105,6 +106,8 @@ const Overview = () => {
             )
           }
         </div>
+
+        {/* Recent comments */}
         <div className="px-6 py-6 border rounded shadow-sm hover:shadow-lg">
           <div className="font-serif text-sm text-neutral-500">Recent comments</div>
           <div className="mt-3 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
@@ -121,7 +124,7 @@ const Overview = () => {
               <tbody>
                 {
                   numCommentsToShow < comments.length && comments.slice(0, numCommentsToShow).map((comment, index) => (
-                    <tr onClick={() => viewStory(comment.storyId.id)} key={comment.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
+                    <tr onClick={() => viewComment(comment.storyId.id, comment.id)} key={comment.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.content}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.storyId ? comment.storyId.title : null}</td>

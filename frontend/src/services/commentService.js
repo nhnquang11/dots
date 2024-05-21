@@ -28,4 +28,12 @@ const update = async (id, newObject, token) => {
     return response.data
 }
 
-export default { post, getOne, update, getAll }
+const remove = async (id, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+    const response = await axios.delete(`${baseUrl}/${id}`, config)
+    return response.data
+}
+
+export default { post, getOne, update, getAll, remove }

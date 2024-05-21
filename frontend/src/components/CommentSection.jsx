@@ -67,7 +67,7 @@ const CommentSection = ({ storyId, comments, setStory }) => {
             storyComments.map((comment, index) => (
               <div key={comment.id} className="border border-neutral-400 rounded-md px-7 py-5 mb-4">
                 <div>
-                  <p className="font-bold text-lg text-neutral-800">{comment.authorId.name}</p>
+                  <p className="font-bold text-lg text-neutral-800">{comment.authorId ? comment.authorId.name : "Dots User"}</p>
                   <span className="text-neutral-400 text-sm font-extralight">Posted on {dateFormat(comment.createdAt)}</span>
                 </div>
                 <p className="mt-2 text-neutral-800">{comment.content}</p>

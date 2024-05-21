@@ -4,10 +4,14 @@ import { newestToOldest } from '../utils'
 import { dateFormat } from '../utils'
 import crossIcon from "../assets/cross.png"
 import checkIcon from "../assets/check.png"
+import ConfirmationModal from './ConfirmationModal'
 
 const Users = () => {
-  const [numToShow, setNumToShow] = useState(2)
+  const [numToShow, setNumToShow] = useState(5)
   const [users, setUsers] = useState([])
+  const [message, setMessage] = useState(null)
+  const [modalId, setModalId] = useState(null)
+
   useEffect(() => {
     userSevice.getAll().then((data) => {
       console.log(data)
@@ -19,17 +23,27 @@ const Users = () => {
     setNumToShow(numToShow + 5)
   }
 
+  const handleDelete = (id, username) => {
+    setMessage(`Are you sure you want to delete ${username}?`)
+    setModalId(id)
+  }
+
+  const handleClose = () => {
+    setMessage(null)
+    setModalId(null)
+  }
+
   const deleteUser = (id) => {
-    // userSevice.remove(id).then(() => {
-    //   setUsers(users.filter(user => user.id !== id))
-    // })
-    console.log('Delete user with id:', id)
+    userSevice.remove(id).then(() => {
+      setUsers(users.filter(user => user.id !== id))
+    })
+    handleClose()
   }
 
   return (
     <div className="mb-20 px-3 mx-auto max-w-screen-xl">
+      {modalId && message && <ConfirmationModal message={message} handleClose={handleClose} handleSubmit={() => deleteUser(modalId)} />}
       <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Users</h3>
-
       <div className="mt-10 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
         <table className="w-full text-sm text-left text-neutral-500 table-auto">
           <thead className="text-xs text-neutral-700 uppercase bg-neutral-100">
@@ -58,7 +72,7 @@ const Users = () => {
                     <img className='w-5 h-5' src={user.isAdmin ? checkIcon : crossIcon} alt="" />
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
-                    <button className="border border-red-500 rounded px-2 py-1 text-xs text-red-500 hover:bg-red-500 hover:text-neutral-50" onClick={() => deleteUser(user.id)}>Delete</button>
+                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => handleDelete(user.id, user.name)}>Delete</button>
                   </td>
                 </tr>
               ))

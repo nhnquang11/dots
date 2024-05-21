@@ -4,8 +4,7 @@ const Notification = ({ message, type }) => {
   const [open, setOpen] = useState(true)
 
   const close = () => {
-    const notification = document.querySelector(".fixed")
-    notification.style.display = "none"
+    setOpen(false)
   }
 
   let style;

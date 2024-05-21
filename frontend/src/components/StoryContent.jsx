@@ -1,19 +1,24 @@
 import 'tailwindcss/tailwind.css';
 import parse, { domToReact } from 'html-react-parser';
+import { useEffect } from 'react';
 
 const StoryContent = ({ htmlContent }) => {
+  useEffect(() => {
+    console.log(htmlContent);
+  }, [])
+
   const options = {
     replace: (domNode) => {
       if (domNode.name === 'h1') {
         return <h1 className="bg-neutral-50 my-6 font-serif text-3xl font-bold leading-8 text-neutral-800 col-span-full md:col-start-3 md:col-span-8">{domToReact(domNode.children)}</h1>;
       }
-      if (domNode.name === 'h2') {
+      else if (domNode.name === 'h2') {
         return <h2 className="bg-neutral-50 my-5 font-serif text-2xl font-semibold leading-8 text-neutral-800 col-span-full md:col-start-3 md:col-span-8">{domToReact(domNode.children)}</h2>;
       }
-      if (domNode.name === 'h3') {
+      else if (domNode.name === 'h3') {
         return <h3 className="bg-neutral-50 my-4 font-serif text-xl font-semibold leading-8 text-neutral-800 col-span-full md:col-start-3 md:col-span-8">{domToReact(domNode.children)}</h3>;
       }
-      if (domNode.name === 'p') {
+      else if (domNode.name === 'p') {
         return <p className="bg-neutral-50 font-serif text-xl leading-8 text-neutral-800 col-span-full md:col-start-3 md:col-span-8">{domToReact(domNode.children)}</p>;
       }
     },
