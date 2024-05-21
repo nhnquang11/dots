@@ -34,6 +34,16 @@ const Story = () => {
   if (!story) { return null }
   return (
     <div>
+      <div className="px-4 py-2 fixed top-10 left-1/2 transform -translate-x-1/2  w-10/12 max-w-[500px] border-[1.5px] border-green-700 font-serif bg-green-50 text-green-800 rounded-lg">
+        <div className="pointer-cursor">
+          <svg className="pointer-cursor w-4 h-4 absolute right-2 top-2" role="button" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div className="my-4 flex justify-center text-center">
+          Your information has been updated successfully!
+        </div>
+      </div>
       <div className="flex flex-col items-center text-center px-5 mt-16 md:mt-28">
         <p className="font-serif text-neutral-600 mb-3">{dateFormat(story.createdAt)}</p>
         <h className="font-serif text-neutral-800 text-5xl md:text-6xl leading-[50px] md:leading-[70px] max-w-4xl">{story.title}</h>

@@ -7,23 +7,38 @@ import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
 import { app } from '../firebase'
 import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth'
+import Notification from '../components/Notification'
+import { useState } from 'react'
 
 const SignIn = () => {
   const email = useField('email')
   const password = useField('password')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   const logIn = async (e) => {
     e.preventDefault()
-    const user = await authService.login({
-      email: email.value,
-      password: password.value
-    })
-    dispatch(setUser(user))
-    navigate('/')
-    email.reset()
-    password.reset()
+    try {
+      const user = await authService.login({
+        email: email.value,
+        password: password.value
+      })
+      dispatch(setUser(user))
+      navigate('/')
+      email.reset()
+      password.reset()
+    } catch (error) {
+      setErrorMessage("Wrong email or password! Please try again.")
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
+    }
   }
 
   const getAttributes = (field) => {
@@ -49,7 +64,7 @@ const SignIn = () => {
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-
+        {errorMessage && <Notification message={errorMessage} type="error" />}
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-16 w-auto"
