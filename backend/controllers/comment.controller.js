@@ -15,7 +15,7 @@ const createComment = async (request, response) => {
 }
 
 const getComments = async (request, response) => {
-  const comments = await Comment.find({})
+  const comments = await Comment.find({}).populate('authorId')
   response.status(200).json(comments)
 }
 
