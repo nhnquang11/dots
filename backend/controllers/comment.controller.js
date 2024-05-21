@@ -4,13 +4,14 @@ const createComment = async (request, response) => {
   const comment = new Comment({
     authorId: request.user.id,
     storyId: request.body.storyId,
-    content: request.body.content,
-    createdAt: new Date(),
-    likes: 0
+    content: request.body.content
   })
 
   const newComment = await comment.save()
-  response.status(201).json(newComment)
+
+  await newComment.populate('authorId')
+
+  response.status(201).json(newComment);
 }
 
 const getComments = async (request, response) => {
@@ -19,7 +20,7 @@ const getComments = async (request, response) => {
 }
 
 const getComment = async (request, response) => {
-  const comment = await Comment.findById(request.params.id)
+  const comment = await Comment.findById(request.params.id).populate('authorId')
   response.status(200).json(comment)
 }
 

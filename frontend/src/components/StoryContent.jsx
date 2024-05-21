@@ -20,7 +20,6 @@ const StoryContent = ({ htmlContent }) => {
   };
 
   const parsedContent = parse(htmlContent, options);
-  console.log(parsedContent);
 
   return (
     <div className="font-serif grid grid-cols-12 md:mx-24 px-5">

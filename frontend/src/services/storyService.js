@@ -20,4 +20,20 @@ const getAll = async () => {
     return response.data
 }
 
-export default { post, getOne, getAll }
+const addCommentToStory = async (id, data, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+    const response = await axios.put(`${baseUrl}/${id}/comment`, data, config)
+    return response.data
+}
+
+const update = async (id, newObject, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+    const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
+    return response.data
+}
+
+export default { post, getOne, getAll, addCommentToStory, update }

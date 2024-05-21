@@ -25,7 +25,9 @@ const createUser = async (request, response, next) => {
     username,
     name,
     email,
-    passwordHash
+    passwordHash,
+    registrationDate: new Date(),
+    lastLogin: new Date()
   })
 
   const newUser = await user.save()

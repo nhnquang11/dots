@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
 import { useNavigate } from 'react-router-dom'
 import authService from '../services/authService'
+import { app } from '../firebase'
+import { GoogleAuthProvider, signInWithPopup, getAuth } from 'firebase/auth'
 
 const SignIn = () => {
   const email = useField('email')
@@ -27,6 +29,21 @@ const SignIn = () => {
   const getAttributes = (field) => {
     const { reset, ...attributes } = field
     return attributes
+  }
+
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider()
+    provider.setCustomParameters({ prompt: 'select_account' })
+    const auth = getAuth(app)
+    try {
+      const result = await signInWithPopup(auth, provider)
+      const { displayName, email, photoURL } = result.user
+      const user = await authService.loginWithGoogle({ name: displayName, email, profilePic: photoURL })
+      dispatch(setUser(user))
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -94,6 +111,7 @@ const SignIn = () => {
           </form>
 
           <button
+            onClick={handleGoogleSignIn}
             className="mt-5 font-serif flex w-full justify-center rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             Continue with Google

@@ -25,7 +25,13 @@ const getStories = async (request, response) => {
 }
 
 const getStory = async (request, response) => {
-  const story = await Story.findById(request.params.id).populate('topics')
+  const story = await Story.findById(request.params.id).populate('topics').populate({
+    path: 'comments',
+    populate: {
+      path: 'authorId',
+      model: 'User'
+    }
+  })
   response.status(200).json(story)
 }
 
@@ -34,12 +40,19 @@ const updateStory = async (request, response) => {
     response.status(200).json(updatedStory)
 }
 
+const addCommentToStory = async (request, response) => {
+  let story = await Story.findById(request.params.id)
+  story.comments= story.comments.concat(request.body.commentId)
+  story = await story.save()
+  response.status(201).json(story)
+}
+
 const deleteStory = async (request, response) => {
   await Story.findByIdAndDelete(request.params.id)
   response.status(204).end()
 }
 
 module.exports = {
-  createStory, getStories, getStory, updateStory, deleteStory
+  createStory, getStories, getStory, updateStory, deleteStory, addCommentToStory
 }
 

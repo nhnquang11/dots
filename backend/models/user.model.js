@@ -27,13 +27,16 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   registrationDate: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   lastLogin: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   isAdmin: {
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   stories: [
     {
@@ -51,8 +54,11 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
+    console.log(returnedObject)
+    if (returnedObject._id) {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+    }
     delete returnedObject.__v
     delete returnedObject.passwordHash
   }}

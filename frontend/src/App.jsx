@@ -19,11 +19,11 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/new-story" element={<NewStory />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/profile" element={user ? <Profile /> : <Navigate replace to='/sign-in' />} />
+        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate replace to='/sign-in' />} />
+        <Route path="/new-story" element={user ? <NewStory /> : <Navigate replace to='/sign-in' />} />
+        <Route path="/sign-up" element={user ? <Navigate replace to='/' /> : <SignUp />} />
+        <Route path="/sign-in" element={user ? <Navigate replace to='/' /> : <SignIn />} />
         <Route path="/story/:id" element={<Story />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

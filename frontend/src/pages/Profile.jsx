@@ -32,8 +32,6 @@ const Profile = () => {
       imageUrl = response.imageUrl
     }
 
-    console.log(imageUrl, username.value, name.value, email.value, password.value)
-
     const updatedUser = {
       username: username.value,
       name: name.value,
@@ -47,7 +45,6 @@ const Profile = () => {
     }
 
     userService.update(user.id, updatedUser).then((data) => {
-      console.log(data)
       dispatch(updateUser({
         name: data.name,
         username: data.username,
@@ -61,8 +58,6 @@ const Profile = () => {
       }, 5000)
     })
   }
-
-  console.log(username)
 
   return (
     <div>
