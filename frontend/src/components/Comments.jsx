@@ -46,8 +46,8 @@ const Comments = () => {
             <tr>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">#</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Posted</th>
-              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Comment</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">User</th>
+              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Comment</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Story</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Likes</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Delete</th>
@@ -60,10 +60,10 @@ const Comments = () => {
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{dateFormat(comment.createdAt)}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
-                    {comment.content}
+                    {comment.authorId ? comment.authorId.username : 'dots-user'}
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
-                    {comment.authorId ? comment.authorId.username : 'dots-user'}
+                    {comment.content}
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     {comment.storyId ? comment.storyId.title : 'dots-story'}

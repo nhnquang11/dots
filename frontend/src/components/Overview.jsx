@@ -35,6 +35,12 @@ const Overview = () => {
     navigate(`/story/${id}`)
   }
 
+  const viewComment = (story, commentId) => {
+    if (story) {
+      navigate(`/story/${story.id}#${commentId}`)
+    }
+  }
+
   const loadMoreComments = () => {
     setNumCommentsToShow(numCommentsToShow + 5)
   }
@@ -124,7 +130,7 @@ const Overview = () => {
               <tbody>
                 {
                   numCommentsToShow < comments.length && comments.slice(0, numCommentsToShow).map((comment, index) => (
-                    <tr onClick={() => viewComment(comment.storyId.id, comment.id)} key={comment.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
+                    <tr onClick={() => viewComment(comment.storyId, comment.id)} key={comment.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.content}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.storyId ? comment.storyId.title : null}</td>

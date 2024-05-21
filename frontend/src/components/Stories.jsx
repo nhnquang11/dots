@@ -103,7 +103,7 @@ const Stories = () => {
       </div>
       {
         numToShow < stories.length && (
-          <div className="mt-3 flex justify-center">
+          <div className="mt-6 flex justify-center">
             <button onClick={loadMoreStories} className="leading-8 font-extralight text-sm font-serif px-3 rounded bg-neutral-900 text-white hover:bg-neutral-600 transition duration-100 ease-in-out">
               Load more
             </button>
