@@ -10,7 +10,7 @@ const Overview = () => {
   const [stories, setStories] = useState([])
   const [traffic, setTraffic] = useState(null)
   const [comments, setComments] = useState([])
-  const [numStoriesToShow, setNumStoriesToShow] = useState(4)
+  const [numStoriesToShow, setNumStoriesToShow] = useState(5)
   const [numCommentsToShow, setNumCommentsToShow] = useState(5)
   const navigate = useNavigate()
 
@@ -22,12 +22,13 @@ const Overview = () => {
       setTraffic(data.count)
     })
     commentService.getAll().then((data) => {
+      console.log(data)
       setComments(data.sort(newestToOldest))
     })
   }, [])
 
   const loadMoreStories = () => {
-    setNumStoriesToShow(numStoriesToShow + 4)
+    setNumStoriesToShow(numStoriesToShow + 5)
   }
 
   const viewStory = (id) => {
@@ -35,7 +36,7 @@ const Overview = () => {
   }
 
   const loadMoreComments = () => {
-    setNumCommentsToShow(numCommentsToShow + 4)
+    setNumCommentsToShow(numCommentsToShow + 5)
   }
 
   return (
@@ -66,7 +67,7 @@ const Overview = () => {
       <div className="mt-3 grid grid-cols-1 lg:grid-cols-2 rounded-lg gap-x-2 gap-y-3">
         <div className="px-6 py-6 border rounded shadow-sm hover:shadow-lg">
           <div className="font-serif text-sm text-neutral-500">Recent stories</div>
-          <div className="mt-2 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
+          <div className="mt-3 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
             <table className="w-full text-sm text-left text-neutral-500 table-auto">
               <thead className="text-xs text-neutral-700 uppercase bg-neutral-100">
                 <tr>
@@ -80,9 +81,9 @@ const Overview = () => {
               <tbody>
                 {
                   stories && stories.slice(0, numStoriesToShow).map((story, index) => (
-                    <tr key={story.id} className="border-t bg-neutral-50">
+                    <tr onClick={() => viewStory(story.id)} key={story.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
-                      <td onClick={() => viewStory(story.id)} className="cursor-pointer py-3 px-4 sm:py-4 sm:px-6">
+                      <td className="py-3 px-4 sm:py-4 sm:px-6">
                         <img className="max-h-16 h-full rounded aspect-video object-cover" src={story.imageUrl} alt="" />
                       </td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{story.title}</td>
@@ -106,13 +107,13 @@ const Overview = () => {
         </div>
         <div className="px-6 py-6 border rounded shadow-sm hover:shadow-lg">
           <div className="font-serif text-sm text-neutral-500">Recent comments</div>
-          <div className="mt-2 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
+          <div className="mt-3 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
             <table className="w-full text-sm text-left text-neutral-500 table-auto">
               <thead className="text-xs text-neutral-700 uppercase bg-neutral-100">
                 <tr>
                   <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">#</th>
                   <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Comment</th>
-                  <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">User</th>
+                  <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Story</th>
                   <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Posted</th>
                   <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Likes</th>
                 </tr>
@@ -120,10 +121,10 @@ const Overview = () => {
               <tbody>
                 {
                   numCommentsToShow < comments.length && comments.slice(0, numCommentsToShow).map((comment, index) => (
-                    <tr key={comment.id} className="border-t bg-neutral-50">
+                    <tr onClick={() => viewStory(comment.storyId.id)} key={comment.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.content}</td>
-                      <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.authorId ? comment.authorId.username : null}</td>
+                      <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.storyId ? comment.storyId.title : null}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{dateFormat(comment.createdAt)}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.likes}</td>
                     </tr>)
