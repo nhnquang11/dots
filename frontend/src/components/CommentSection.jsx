@@ -5,6 +5,7 @@ import storyService from "../services/storyService"
 import { useState } from "react"
 import { dateFormat } from "../utils"
 import { useNavigate } from "react-router-dom"
+import Notification from "./Notification"
 
 const CommentSection = ({ storyId, comments, setStory }) => {
   const user = useSelector((state) => state.user)
@@ -13,6 +14,8 @@ const CommentSection = ({ storyId, comments, setStory }) => {
   const [likes, setLikes] = useState(comments.map(comment => comment.likes))
   const comment = useField("text")
   const navigate = useNavigate()
+  const [message, setMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   const postComment = () => {
     commentService.post({ storyId, content: comment.value }, user.token).then(data => {
@@ -40,11 +43,21 @@ const CommentSection = ({ storyId, comments, setStory }) => {
       newLikes[index] = newLikes[index] + 1
       commentService.update(storyComments[index].id, { likes: newLikes[index] }, user.token)
       setLikes(newLikes)
+    } else {
+      setMessage("Sign in to like a comment.")
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setMessage(null)
+        setTimeoutId(null)
+      }, 5000))
     }
   }
 
   return (
     <div>
+      {message && <Notification message={message} />}
       <div className="font-serif grid grid-cols-12 md:mx-24 px-5 gap-y-6">
         <h3 className=" bg-neutral-50 font-bold font-serif text-xl leading-8 text-neutral-800 col-span-full md:col-start-3 md:col-span-8">
           Comments

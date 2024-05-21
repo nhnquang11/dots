@@ -10,6 +10,11 @@ const post = async (comment, token) => {
     return response.data
 }
 
+const getAll = async () => {
+    const response = await axios.get(baseUrl)
+    return response.data
+}
+
 const getOne = async (id) => {
     const response = await axios.get(`${baseUrl}/${id}`)
     return response.data
@@ -23,4 +28,4 @@ const update = async (id, newObject, token) => {
     return response.data
 }
 
-export default { post, getOne, update }
+export default { post, getOne, update, getAll }
