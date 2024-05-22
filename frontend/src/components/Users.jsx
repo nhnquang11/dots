@@ -51,7 +51,7 @@ const Users = () => {
       {modalId && message && <ConfirmationModal message={message} handleClose={handleClose} handleSubmit={() => deleteUser(modalId)} />}
       <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Users</h3>
       <div className="mt-10 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
-        <table className="w-full text-sm text-left text-neutral-500 table-auto">
+        <table className="w-full text-sm text-left text-neutral-600 table-auto">
           <thead className="text-xs text-neutral-700 uppercase bg-neutral-100">
             <tr>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">#</th>
@@ -66,7 +66,7 @@ const Users = () => {
           <tbody>
             {
               users.slice(0, numToShow).map((user, index) => (
-                <tr key={user.id} className="border-t bg-neutral-50">
+                <tr key={user.id} className="hover:bg-neutral-100  border-t bg-neutral-50">
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{dateFormat(user.registrationDate)}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
@@ -74,8 +74,8 @@ const Users = () => {
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{user.username}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{user.email}</td>
-                  <td onClick={() => toggleAdmin(user.id, user.isAdmin)} className="cursor-pointer py-3 px-4 sm:py-4 sm:px-6">
-                    <img className='w-5 h-5' src={user.isAdmin ? checkIcon : crossIcon} alt="" />
+                  <td onClick={() => toggleAdmin(user.id, user.isAdmin)} className="py-3 px-4 sm:py-4 sm:px-6">
+                    <img className='cursor-pointer w-5 h-5' src={user.isAdmin ? checkIcon : crossIcon} alt="" />
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => handleDelete(user.id, user.name)}>Delete</button>

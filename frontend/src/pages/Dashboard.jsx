@@ -3,8 +3,9 @@ import Overview from "../components/Overview"
 import Comments from "../components/Comments"
 import Users from "../components/Users"
 import Stories from "../components/Stories"
+import Topics from "../components/Topics";
 
-const active = "leading-8 font-extralight text-sm font-serif px-3 rounded bg-neutral-900 text-white hover:bg-neutral-600 transition duration-100 ease-in-out"
+const active = "leading-8 font-extralight text-sm font-serif px-3 rounded bg-neutral-900 text-white hover:bg-neutral-700 transition duration-100 ease-in-out"
 const inActive = "leading-8 font-extralight text-sm font-serif px-3 rounded text-neutral-900 border border-neutral-900 hover:bg-neutral-200 transition duration-100 ease-in-out"
 
 const Dashboard = () => {
@@ -18,6 +19,7 @@ const Dashboard = () => {
     else if (component === 'comments') setComponentToShow(<Comments />);
     else if (component === 'users') setComponentToShow(<Users />);
     else if (component === 'stories') setComponentToShow(<Stories />);
+    else if (component === 'topics') setComponentToShow(<Topics />);
   }
 
   return (
@@ -28,6 +30,7 @@ const Dashboard = () => {
           <button onClick={handleButtonOnClick} value="users" className={componentName === "users" ? active : inActive}>Users</button>
           <button onClick={handleButtonOnClick} value="stories" className={componentName === "stories" ? active : inActive}>Stories</button>
           <button onClick={handleButtonOnClick} value="comments" className={componentName === "comments" ? active : inActive}>Comments</button>
+          <button onClick={handleButtonOnClick} value="topics" className={componentName === "topics" ? active : inActive}>Topics</button>
         </div>
       </div>
       {componentToShow}

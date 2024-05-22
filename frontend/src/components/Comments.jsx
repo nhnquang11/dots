@@ -4,6 +4,8 @@ import { dateFormat } from "../utils"
 import ConfirmationModal from './ConfirmationModal'
 import { useNavigate } from "react-router-dom"
 import Notification from "./Notification"
+import { newestToOldest } from "../utils"
+
 
 const Comments = () => {
   const [comments, setComments] = useState([])
@@ -16,7 +18,7 @@ const Comments = () => {
 
   useEffect(() => {
     commentService.getAll().then((data) => {
-      setComments(data.sort((a, b) => b.likes - a.likes))
+      setComments(data.sort(newestToOldest))
     })
   }, [])
 
@@ -115,7 +117,7 @@ const Comments = () => {
       </div>
       {
         numToShow < comments.length && (
-          <div className="mt-3 flex justify-center">
+          <div className="mt-6 flex justify-center">
             <button onClick={loadMoreComments} className="leading-8 font-extralight text-sm font-serif px-3 rounded bg-neutral-900 text-white hover:bg-neutral-600 transition duration-100 ease-in-out">
               Load more
             </button>
