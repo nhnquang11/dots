@@ -28,8 +28,7 @@ const NewStory = () => {
   useEffect(() => {
     topicService.getAll().then((data) => {
       setTopics(data)
-    }
-    )
+    })
   }, [])
 
   const publishStory = async () => {

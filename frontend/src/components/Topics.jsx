@@ -7,6 +7,7 @@ import { useRef } from 'react'
 import Notification from './Notification'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
+import TopicUpdate from './TopicUpdate'
 
 const Topics = () => {
   const [numToShow, setNumToShow] = useState(5)
@@ -19,6 +20,7 @@ const Topics = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [timeoutId, setTimeoutId] = useState(null)
   const dispatch = useDispatch()
+  const [editList, setEditList] = useState([])
 
   useEffect(() => {
     topicService.getAll().then((data) => {
@@ -114,6 +116,30 @@ const Topics = () => {
     setTimeoutId(null)
   }
 
+  const handleSaveOnClick = (id, content) => {
+    topicService.update(id, { name: content }).then(() => {
+      setTopics(topics.map(topic => topic.id === id ? { ...topic, name: content } : topic))
+      dispatch(setNotification(`Topic updated successfully!`))
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        dispatch(setNotification(null))
+        setTimeoutId(null)
+      }, 5000))
+      setEditList(editList.filter(topicId => topicId !== id))
+    }).catch(error => {
+      setErrorMessage(error.response.data.error)
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
+    })
+  }
+
   return (
     <div className="mb-20 px-3 mx-auto max-w-screen-xl">
       {errorMessage && <Notification onClose={notiOnClose} message={errorMessage} type="error" />}
@@ -121,7 +147,7 @@ const Topics = () => {
       <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Topics</h3>
       <div className="flex justify-center gap-1 mt-10">
         <input
-          className="w-36 text-neutral-800 text-sm font-serif font-hairline rounded border border-neutral-400 placeholder-neutral-400 bg-transparent px-3 py-1 transition duration-200 ease-in-out focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
+          className="w-36 text-neutral-900 text-sm font-serif font-hairline rounded border border-neutral-400 placeholder-neutral-400 bg-transparent px-3 py-1 transition duration-200 ease-in-out focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
           {...newTopic.getAttributes()}
           placeholder="New topic"
           onKeyPress={handleKeyPress}
@@ -135,8 +161,10 @@ const Topics = () => {
             <tr>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">#</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Name</th>
-              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Num Stories</th>
-              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Edit</th>
+              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Stories</th>
+              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6 flex justify-end">
+                <div>Edit</div>
+              </th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Delete</th>
             </tr>
           </thead>
@@ -147,11 +175,19 @@ const Topics = () => {
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{topic.name}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{countStories(topic.id)}</td>
-                  <td className="py-3 px-4 sm:py-4 sm:px-6">
-                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => console.log("Edit")}>Edit</button>
+                  <td className="py-3 px-4 sm:py-4 sm:px-6 flex justify-end">
+                    <div className='min-w-56  flex justify-end'>
+                      {
+                        editList.includes(topic.id) ? (
+                          <TopicUpdate defaultValue={topic.name} onCancel={() => setEditList(editList.filter(id => id !== topic.id))} onSave={(content) => handleSaveOnClick(topic.id, content)} />
+                        ) : (
+                          <button className="border border-neutral-600 rounded px-2 py-1 text-xs bg-neutral-900 text-neutral-50 hover:bg-neutral-700" onClick={() => setEditList(editList.concat(topic.id))}>Edit</button>
+                        )
+                      }
+                    </div>
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
-                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => handleDeleteOnClick(topic.id, topic.name)}>Delete</button>
+                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs bg-neutral-900 text-neutral-50 hover:bg-neutral-700" onClick={() => handleDeleteOnClick(topic.id, topic.name)}>Delete</button>
                   </td>
                 </tr>
               ))
