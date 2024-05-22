@@ -27,7 +27,7 @@ const Search = () => {
 
   return (
     <div className="mb-16">
-      <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Search results{query ? `: ${query}` : ''}</h3>
+      <h3 className="mt-20 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Search results{query ? `: ${query}` : ''}</h3>
       {!loading && <StorySection initialStories={results} />}
     </div>
   )

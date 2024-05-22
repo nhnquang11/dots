@@ -11,4 +11,9 @@ const update = async (id, topic) => {
     return response.data
 }
 
-export default { getAll, update }
+const createNew = async (topic) => {
+    const response = await axios.post(baseUrl, topic)
+    return response.data
+}
+
+export default { getAll, update, createNew }

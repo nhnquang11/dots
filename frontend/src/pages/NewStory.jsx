@@ -6,6 +6,8 @@ import uploadService from "../services/uploadService"
 import { useSelector } from "react-redux"
 import storyService from "../services/storyService"
 import { useNavigate } from "react-router-dom"
+import { useRef } from "react"
+import Notification from "../components/Notification"
 
 const NewStory = () => {
   const [selectedFile, setSelectedFile] = useState("Include a high-quality image in your story to make it more inviting to readers.")
@@ -18,6 +20,10 @@ const NewStory = () => {
   const [topicIndexes, setTopicIndexes] = useState([])
   const navigate = useNavigate()
   const [publishing, setPublishing] = useState(false)
+  const newTopic = useField('text')
+  const inputRef = useRef(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   useEffect(() => {
     topicService.getAll().then((data) => {
@@ -57,8 +63,42 @@ const NewStory = () => {
     }
   }
 
+  const addNewTopic = () => {
+    topicService.createNew({ name: newTopic.value }).then((data) => {
+      setTopics([...topics, data])
+      topicIndexes.push(topics.length)
+      newTopic.reset()
+    }).catch(error => {
+      setErrorMessage(error.response.data.error)
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
+    })
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      inputRef.current.blur();
+      addNewTopic();
+    }
+  }
+
+  const notiOnClose = () => {
+    setErrorMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
   return (
     <div className="flex flex-col justify-center px-3">
+      {errorMessage && <Notification onClose={notiOnClose} message={errorMessage} type="error" />}
       <h2 className="text-neutral-800 mt-16 mb-12 text-5xl font-bold font-serif text-center">Write a story</h2>
       <div>
         <input
@@ -109,6 +149,16 @@ const NewStory = () => {
                 </div>
               ))
             }
+          </div>
+          <div className="flex justify-center gap-1 mt-4">
+            <input
+              className="w-36 text-neutral-800 text-sm font-serif font-hairline rounded border border-neutral-400 placeholder-neutral-500 bg-transparent px-3 py-1 transition duration-200 ease-in-out focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
+              {...newTopic.getAttributes()}
+              placeholder="New topic"
+              onKeyPress={handleKeyPress}
+              ref={inputRef}
+            />
+            <button onClick={addNewTopic} className="font-extralight text-xs font-serif px-3 rounded text-neutral-900 border border-neutral-700 hover:bg-neutral-200 transition duration-100 ease-in-out">Add</button>
           </div>
         </div>
 
