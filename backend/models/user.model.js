@@ -28,11 +28,11 @@ const userSchema = new mongoose.Schema({
   },
   registrationDate: {
     type: Date,
-    default: Date.now
+    default: new Date(),
   },
   lastLogin: {
     type: Date,
-    default: Date.now
+    default: new Date(),
   },
   isAdmin: {
     type: Boolean,
@@ -54,7 +54,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    console.log(returnedObject)
     if (returnedObject._id) {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id

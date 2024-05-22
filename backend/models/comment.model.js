@@ -21,7 +21,11 @@ const commentSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: new Date()
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date()
   }
 })
 

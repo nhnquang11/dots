@@ -41,7 +41,6 @@ const getUsers = async (request, response) => {
 
 const getUser = async (request, response) => {
   const user = await User.findById(request.params.id)
-  console.log(user)
   response.status(200).json(user)
 }
 
@@ -51,12 +50,26 @@ const deleteUser = (request, response) => {
   })
 }
 
-const updateUser = (request, response) => {
+const updateUser = async (request, response) => {
   const user = {
     username: request.body.username,
     name: request.body.name,
     email: request.body.email,
     profilePic: request.body.profilePic
+  }
+
+  if (request.body.isAdmin !== undefined) {
+    user.isAdmin = request.body.isAdmin
+  }
+
+  let result = await User.findOne({ email: user.email })
+  if (result && result._id.toString() !== request.params.id) {
+    return response.status(400).json({ error: 'Email already exists.' })
+  }
+
+  result = await User.findOne({ username: user.username })
+  if (result && result._id.toString() !== request.params.id) {
+    return response.status(400).json({ error: 'Username already exists.' })
   }
 
   const password = request.body.password
@@ -71,9 +84,8 @@ const updateUser = (request, response) => {
     user.passwordHash = passwordHash
   }
 
-  User.findByIdAndUpdate(request.params.id, user, { new: true }).then(result => {
-    response.json(result)
-  })
+  result = await User.findByIdAndUpdate(request.params.id, user, { new: true })
+  return response.status(200).json(result)
 }
 
 module.exports = {

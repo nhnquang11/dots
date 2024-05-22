@@ -20,7 +20,7 @@ const createStory = async (request, response) => {
 }
 
 const getStories = async (request, response) => {
-  const stories = await Story.find({}).populate('topics')
+  const stories = await Story.find({}).populate('topics').populate('authorId')
   response.status(200).json(stories)
 }
 
@@ -32,11 +32,15 @@ const getStory = async (request, response) => {
       model: 'User'
     }
   })
+
+  story.views += 1
+  await story.save()
+  
   response.status(200).json(story)
 }
 
 const updateStory = async (request, response) => {
-    const updatedStory = await Story.findByIdAndUpdate(request.params.id, request.body, { new: true })
+    const updatedStory = await Story.findByIdAndUpdate(request.params.id, { updatedAt: new Date(), ...request.body}, { new: true })
     response.status(200).json(updatedStory)
 }
 

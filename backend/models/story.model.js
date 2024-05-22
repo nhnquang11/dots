@@ -23,16 +23,20 @@ const storySchema = new mongoose.Schema({
     required: true
   },
   likes: {
-    type: Number
+    type: Number,
+    default: 0
   },
   views: {
-    type: Number
+    type: Number,
+    default: 0
   },
   createdAt: {
-    type: Date
+    type: Date,
+    default: new Date(),
   },
   updatedAt: {
-    type: Date
+    type: Date,
+    default: new Date(),
   },
   topics: [
     {

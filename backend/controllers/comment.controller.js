@@ -15,7 +15,7 @@ const createComment = async (request, response) => {
 }
 
 const getComments = async (request, response) => {
-  const comments = await Comment.find({}).populate('authorId')
+  const comments = await Comment.find({}).populate('authorId').populate('storyId')
   response.status(200).json(comments)
 }
 
@@ -26,6 +26,8 @@ const getComment = async (request, response) => {
 
 const updateComment = async (request, response) => {
   const updatedComment = await Comment.findByIdAndUpdate(request.params.id, request.body, { new: true })
+  updatedComment.updatedAt = new Date()
+  await updatedComment.save()
   response.status(200).json(updatedComment)
 }
 

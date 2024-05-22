@@ -37,7 +37,6 @@ const google = async (request, response) => {
 
   if (!user) {
     password = generateRandomPassword(10)
-    console.log('password:', password)
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
