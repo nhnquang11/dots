@@ -72,9 +72,17 @@ const Profile = () => {
     })
   }
 
+  const notiOnClose = () => {
+    setErrorMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
   return (
     <div className="z-40">
-      {errorMessage && <Notification message={errorMessage} type="error" />}
+      {errorMessage && <Notification onClose={notiOnClose} message={errorMessage} type="error" />}
       <h3 className="mt-20 font-serif font-semibold text-3xl sm:text-4xl text-center px-5">Account Information</h3>
       <div className="mt-12 mb-16">
         <div className="flex items-center justify-center">

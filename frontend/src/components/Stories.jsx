@@ -3,6 +3,7 @@ import storyService from "../services/storyService"
 import { dateFormat } from "../utils"
 import { useNavigate } from "react-router-dom"
 import ConfirmationModal from './ConfirmationModal'
+import { newestToOldest } from "../utils"
 
 const Stories = () => {
   const [stories, setStories] = useState([])
@@ -13,7 +14,7 @@ const Stories = () => {
 
   useEffect(() => {
     storyService.getAll().then((data) => {
-      setStories(data.sort((a, b) => b.likes - a.likes))
+      setStories(data.sort(newestToOldest))
     })
   }, [])
 
@@ -43,7 +44,7 @@ const Stories = () => {
       {modalId && message && <ConfirmationModal message={message} handleClose={handleClose} handleSubmit={() => deleteStory(modalId)} />}
       <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Stories</h3>
       <div className="mt-10 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
-        <table className="w-full text-sm text-left text-neutral-500 table-auto">
+        <table className="w-full text-sm text-left text-neutral-600 table-auto">
           <thead className="text-xs text-neutral-700 uppercase bg-neutral-100">
             <tr>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">#</th>
@@ -51,9 +52,11 @@ const Stories = () => {
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Updated</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Preview</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Title</th>
+              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Views</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Author</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Claps</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Comments</th>
+              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Read</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Edit</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Delete</th>
             </tr>
@@ -61,7 +64,7 @@ const Stories = () => {
           <tbody>
             {
               stories.slice(0, numToShow).map((story, index) => (
-                <tr key={story.id} className="border-t bg-neutral-50">
+                <tr key={story.id} className="hover:bg-neutral-100 border-t bg-neutral-50">
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     {dateFormat(story.createdAt)}
@@ -76,6 +79,9 @@ const Stories = () => {
                     {story.title}
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
+                    {story.views}
+                  </td>
+                  <td className="py-3 px-4 sm:py-4 sm:px-6">
                     {story.authorId ? story.authorId.username : 'dots-user'}
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
@@ -83,6 +89,11 @@ const Stories = () => {
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     {story.comments.length}
+                  </td>
+                  <td className="py-3 px-4 sm:py-4 sm:px-6">
+                    <button onClick={() => navigate(`/story/${story.id}`)} className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50">
+                      Read
+                    </button>
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     <button onClick={() => navigate(`/edit-story/${story.id}`)} className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50">

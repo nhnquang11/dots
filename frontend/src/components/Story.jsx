@@ -7,6 +7,9 @@ import CommentSection from "./CommentSection";
 import { useSelector } from "react-redux";
 import Notification from "./Notification";
 import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "./ConfirmationModal";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../reducers/notificationReducer";
 
 const Story = () => {
   const user = useSelector((state) => state.user)
@@ -17,6 +20,9 @@ const Story = () => {
   const [message, setMessage] = useState(null)
   const [timeoutId, setTimeoutId] = useState(null)
   const navigate = useNavigate()
+  const [modalMessage, setModalMessage] = useState(null)
+  const [modalId, setModalId] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     storyService.getOne(id).then((data) => {
@@ -44,10 +50,39 @@ const Story = () => {
     }
   }
 
+  const notiOnClose = () => {
+    setMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
+  const handleModalOnClose = () => {
+    setModalId(null)
+    setModalMessage(null)
+  }
+
+  const handleDeleteStoryOnClick = () => {
+    setModalId(story.id)
+    setModalMessage("Are you sure you want to delete this story?")
+  }
+
+  const deleteStory = (id) => {
+    storyService.remove(id, user.token).then(() => {
+      navigate("/")
+      dispatch(setNotification("Story deleted successfully."))
+      setTimeout(() => {
+        dispatch(setNotification(null))
+      }, 5000)
+    })
+  }
+
   if (!story) { return null }
   return (
     <div>
-      {message && <Notification message={message} />}
+      {message && <Notification onClose={notiOnClose} message={message} />}
+      {modalId && modalMessage && <ConfirmationModal message={modalMessage} handleClose={handleModalOnClose} handleSubmit={() => deleteStory(modalId)} />}
       <div className="flex flex-col items-center text-center px-5 mt-16 md:mt-28">
         <p className="font-serif text-neutral-600 mb-3">{dateFormat(story.createdAt)}</p>
         <h className="font-serif text-neutral-800 text-5xl md:text-6xl leading-[50px] md:leading-[70px] max-w-4xl">{story.title}</h>
@@ -79,10 +114,13 @@ const Story = () => {
               </a>
             </div>
             {
-              user && user.isAdmin && <button onClick={() => navigate(`/edit-story/${id}`)} value="comments" className="leading-8 font-extralight text-sm font-serif px-3 rounded text-neutral-900 border border-neutral-900 hover:bg-neutral-200 transition duration-100 ease-in-out">Edit story</button>
+              user && user.isAdmin &&
+              <div>
+                <button onClick={() => navigate(`/edit-story/${id}`)} value="comments" className="leading-8 font-extralight text-sm font-serif px-3 rounded text-neutral-800 border border-neutral-800 hover:bg-neutral-200 transition duration-100 ease-in-out">Edit story</button>
+                <button onClick={() => handleDeleteStoryOnClick()} value="comments" className="ml-1 leading-8 font-extralight text-sm font-serif px-3 rounded text-neutral-800 border border-neutral-800 hover:bg-neutral-200 transition duration-100 ease-in-out">Delete story</button>
+              </div>
             }
           </div>
-
         </div>
       </div>
       <div id="comment-section" className="mt-16"></div>

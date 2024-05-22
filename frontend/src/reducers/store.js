@@ -1,11 +1,13 @@
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import userReducer from './userReducer'
+import notificationReducer from './notificationReducer';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  notification: notificationReducer,
 })
 
 const persistConfig = {

@@ -12,13 +12,20 @@ import Profile from "./pages/Profile";
 import { useSelector } from "react-redux";
 import EditStory from "./pages/EditStory";
 import OhNo from "./pages/OhNo";
+import Notification from "./components/Notification";
+import { useDispatch } from "react-redux";
+import { setNotification } from "./reducers/notificationReducer";
 
 const App = () => {
   const user = useSelector(state => state.user)
   console.log(user)
+  const notification = useSelector(state => state.notification)
+  const dispatch = useDispatch()
+
   return (
     <BrowserRouter>
       <Header />
+      {notification && <Notification message={notification} onClose={() => dispatch(setNotification(null))} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={user ? <Profile /> : <Navigate replace to='/sign-in' />} />

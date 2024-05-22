@@ -6,6 +6,8 @@ import { useState } from "react"
 import { dateFormat } from "../utils"
 import { useNavigate } from "react-router-dom"
 import Notification from "./Notification"
+import CommentEditor from "./CommentEditor"
+import ConfirmationModal from './ConfirmationModal'
 
 const CommentSection = ({ storyId, comments, setStory }) => {
   const user = useSelector((state) => state.user)
@@ -16,6 +18,10 @@ const CommentSection = ({ storyId, comments, setStory }) => {
   const navigate = useNavigate()
   const [message, setMessage] = useState(null)
   const [timeoutId, setTimeoutId] = useState(null)
+  const [editList, setEditList] = useState([])
+  const [modalId, setModalId] = useState(null)
+  const [modalIndex, setModalIndex] = useState(null)
+  const [modalMessage, setModalMessage] = useState(null)
 
   const postComment = () => {
     commentService.post({ storyId, content: comment.value }, user.token).then(data => {
@@ -24,6 +30,13 @@ const CommentSection = ({ storyId, comments, setStory }) => {
       setLikes([...likes, data.likes])
       comment.reset()
       storyService.addCommentToStory(storyId, { commentId: data.id }, user.token)
+    })
+  }
+
+  const saveComment = (id, content) => {
+    commentService.update(id, { content: content }, user.token).then(data => {
+      setStoryComments(storyComments.map(comment => comment.id === id ? { ...comment, content } : comment))
+      setEditList(editList.filter(commentId => commentId !== id))
     })
   }
 
@@ -55,9 +68,49 @@ const CommentSection = ({ storyId, comments, setStory }) => {
     }
   }
 
+  const notiOnClose = () => {
+    setMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
+  const handleDeleteOnClick = (index, id, content) => {
+    setModalId(id)
+    setModalIndex(index)
+    setModalMessage(`Are you sure you want to delete "${content}"?`)
+  }
+
+  const deleteComment = (id, index) => {
+    commentService.remove(id, user.token).then(() => {
+      setStoryComments(storyComments.filter(comment => comment.id !== id))
+      setLiked(liked.filter((like, i) => i !== index))
+      setLikes(likes.filter((like, i) => i !== index))
+    })
+    setModalId(null)
+    setModalIndex(null)
+    setModalMessage(null)
+    setMessage("Comment deleted.")
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(setTimeout(() => {
+      setMessage(null)
+      setTimeoutId(null)
+    }, 5000))
+  }
+
+  const handleModalOnClose = () => {
+    setModalId(null)
+    setModalIndex(null)
+    setModalMessage(null)
+  }
+
   return (
     <div>
-      {message && <Notification message={message} />}
+      {message && <Notification onClose={notiOnClose} message={message} />}
+      {modalId && modalIndex && modalMessage && <ConfirmationModal message={modalMessage} handleClose={handleModalOnClose} handleSubmit={() => deleteComment(modalId, modalIndex)} />}
       <div className="font-serif grid grid-cols-12 md:mx-24 px-5 gap-y-6">
         <h3 className=" bg-neutral-50 font-bold font-serif text-xl leading-8 text-neutral-800 col-span-full md:col-start-3 md:col-span-8">
           Comments
@@ -71,21 +124,37 @@ const CommentSection = ({ storyId, comments, setStory }) => {
                   <span className="text-neutral-400 text-sm font-extralight">Posted on {dateFormat(comment.createdAt)}</span>
                 </div>
                 <p className="mt-2 text-neutral-800">{comment.content}</p>
-                <div onClick={() => likeComment(index)} className="cursor-pointer mt-2 flex items-center" value={index}>
+                <div className="mt-2 flex justify-between items-center">
+                  <div onClick={() => likeComment(index)} className="cursor-pointer flex items-center" value={index}>
+                    {
+                      liked[index] && (
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="fill-red-500 w-5 h-5">
+                          <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                        </svg>
+                      )}
+                    {
+                      !liked[index] && (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-neutral-700 w-5 h-5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                        </svg>
+                      )}
+                    <span className="ml-1 text-sm text-neutral-700">{likes[index]} Likes</span>
+                  </div>
                   {
-                    liked[index] && (
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="fill-red-500 w-5 h-5">
-                        <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                      </svg>
-                    )}
-                  {
-                    !liked[index] && (
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-neutral-700 w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                      </svg>
-                    )}
-                  <span className="ml-1 text-sm text-neutral-700">{likes[index]} Likes</span>
+                    comment.authorId && user.id === comment.authorId.id && (
+                      <div>
+                        <button onClick={() => setEditList([...editList, comment.id])} value="comments" className="leading-8 font-extralight text-sm font-serif px-1 rounded text-neutral-500 hover:text-neutral-600 transition duration-100 ease-in-out">Edit</button>
+                        <span className="text-neutral-500">|</span>
+                        <button onClick={() => handleDeleteOnClick(index, comment.id, comment.content)} value="comments" className="leading-8 font-extralight text-sm font-serif px-1 rounded text-neutral-500 hover:text-neutral-600 transition duration-100 ease-in-out">Delete</button>
+                      </div>
+                    )
+                  }
                 </div>
+                {
+                  editList.includes(comment.id) && (
+                    <CommentEditor onSave={(content) => saveComment(comment.id, content)} onCancel={() => setEditList(editList.filter(id => id !== comment.id))} defaultValue={comment.content} />
+                  )
+                }
               </div>
             ))
           }
@@ -98,10 +167,10 @@ const CommentSection = ({ storyId, comments, setStory }) => {
                   Join the discussion
                 </h3>
                 <div className="mt-6 flex gap-x-3">
-                  <img className="w-10 h-10 rounded-full" src={user.profilePic} alt="" />
+                  <img className="w-10 h-10 rounded object-cover" src={user.profilePic} alt="" />
                   <div className="w-full">
                     <textarea onKeyPress={handleKeyPress} {...comment.getAttributes()} placeholder="Write a comment" rows="3" className="bg-neutral-50 placeholder-neutral-400 w-full border border-neutral-400 rounded-md px-4 py-3 sm:px-7 sm:py-5" />
-                    <button onClick={postComment} className="mt-1 h-9 font-extralight text-sm font-serif px-5 rounded-md bg-neutral-900 text-white hover:bg-neutral-700 transition duration-200 ease-in-out">Post</button>
+                    <button onClick={postComment} className="mt-1 h-9 font-extralight text-sm font-serif px-5 rounded-md bg-neutral-800 text-neutral-50 hover:bg-neutral-700 transition duration-200 ease-in-out">Post</button>
                   </div>
                 </div>
               </div>

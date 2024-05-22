@@ -39,6 +39,13 @@ const Users = () => {
     handleClose()
   }
 
+  const toggleAdmin = (id, isAdmin) => {
+    userSevice.update(id, { isAdmin: !isAdmin }).then((data) => {
+      setUsers(users.map(user => user.id === id ? { ...user, isAdmin: !isAdmin } : user))
+      console.log(data)
+    })
+  }
+
   return (
     <div className="mb-20 px-3 mx-auto max-w-screen-xl">
       {modalId && message && <ConfirmationModal message={message} handleClose={handleClose} handleSubmit={() => deleteUser(modalId)} />}
@@ -67,7 +74,7 @@ const Users = () => {
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{user.username}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{user.email}</td>
-                  <td className="py-3 px-4 sm:py-4 sm:px-6">
+                  <td onClick={() => toggleAdmin(user.id, user.isAdmin)} className="cursor-pointer py-3 px-4 sm:py-4 sm:px-6">
                     <img className='w-5 h-5' src={user.isAdmin ? checkIcon : crossIcon} alt="" />
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">

@@ -5,6 +5,7 @@ import commentService from "../services/commentService"
 import { dateFormat } from "../utils"
 import { newestToOldest } from "../utils"
 import { useNavigate } from "react-router-dom"
+import Notification from "./Notification"
 
 const Overview = () => {
   const [stories, setStories] = useState([])
@@ -13,6 +14,8 @@ const Overview = () => {
   const [numStoriesToShow, setNumStoriesToShow] = useState(5)
   const [numCommentsToShow, setNumCommentsToShow] = useState(5)
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   useEffect(() => {
     storyService.getAll().then((data) => {
@@ -37,6 +40,15 @@ const Overview = () => {
   const viewComment = (story, commentId) => {
     if (story) {
       navigate(`/story/${story.id}#${commentId}`)
+    } else {
+      setErrorMessage("Story has been deleted.")
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
     }
   }
 
@@ -44,8 +56,17 @@ const Overview = () => {
     setNumCommentsToShow(numCommentsToShow + 5)
   }
 
+  const notiOnClose = () => {
+    setErrorMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
   return (
     <div className="mb-20 px-3 mx-auto max-w-screen-xl">
+      {errorMessage && <Notification message={errorMessage} onClose={notiOnClose} type="error" />}
       <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Currently there are...</h3>
 
       {/* Numbers */}
@@ -132,7 +153,7 @@ const Overview = () => {
                     <tr onClick={() => viewComment(comment.storyId, comment.id)} key={comment.id} className="cursor-pointer hover:text-neutral-800 border-t bg-neutral-50">
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.content}</td>
-                      <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.storyId ? comment.storyId.title : null}</td>
+                      <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.storyId ? comment.storyId.title : "dots-story"}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{dateFormat(comment.createdAt)}</td>
                       <td className="py-3 px-4 sm:py-4 sm:px-6">{comment.likes}</td>
                     </tr>)

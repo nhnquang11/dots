@@ -42,10 +42,18 @@ export default function SignUp() {
     }
   }
 
+  const notiOnClose = () => {
+    setErrorMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        {errorMessage && <Notification message={errorMessage} type="error" />}
+        {errorMessage && <Notification onClose={notiOnClose} message={errorMessage} type="error" />}
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-16 w-auto"

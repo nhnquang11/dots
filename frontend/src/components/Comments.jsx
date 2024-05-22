@@ -2,12 +2,17 @@ import { useEffect, useState } from "react"
 import commentService from "../services/commentService"
 import { dateFormat } from "../utils"
 import ConfirmationModal from './ConfirmationModal'
+import { useNavigate } from "react-router-dom"
+import Notification from "./Notification"
 
 const Comments = () => {
   const [comments, setComments] = useState([])
   const [numToShow, setNumToShow] = useState(5)
   const [message, setMessage] = useState(null)
   const [modalId, setModalId] = useState(null)
+  const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [timeoutId, setTimeoutId] = useState(null)
 
   useEffect(() => {
     commentService.getAll().then((data) => {
@@ -29,19 +34,43 @@ const Comments = () => {
     setModalId(id)
   }
 
-  const deleteStory = (id) => {
+  const deleteComment = (id) => {
     commentService.remove(id).then(() => {
       setComments(comments.filter(comment => comment.id !== id))
     })
     handleClose()
   }
 
+  const readStory = (story) => {
+    if (story) {
+      navigate(`/story/${story.id}`)
+    } else {
+      setErrorMessage("Story has been deleted.")
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      setTimeoutId(setTimeout(() => {
+        setErrorMessage(null)
+        setTimeoutId(null)
+      }, 5000))
+    }
+  }
+
+  const notiOnClose = () => {
+    setErrorMessage(null)
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+    setTimeoutId(null)
+  }
+
   return (
     <div className="mb-20 px-3 mx-auto max-w-screen-xl">
-      {modalId && message && <ConfirmationModal message={message} handleClose={handleClose} handleSubmit={() => deleteStory(modalId)} />}
+      {modalId && message && <ConfirmationModal message={message} handleClose={handleClose} handleSubmit={() => deleteComment(modalId)} />}
+      {errorMessage && <Notification message={errorMessage} onClose={notiOnClose} type="error" />}
       <h3 className="mt-16 font-serif text-neutral-900 font-semibold text-4xl text-center px-2">Comments</h3>
       <div className="mt-10 font-serif flex items-center justify-center w-full overflow-x-auto border rounded">
-        <table className="w-full text-sm text-left text-neutral-500 table-auto">
+        <table className="w-full text-sm text-left text-neutral-600 table-auto">
           <thead className="text-xs text-neutral-700 uppercase bg-neutral-100">
             <tr>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">#</th>
@@ -50,13 +79,14 @@ const Comments = () => {
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Comment</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Story</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Likes</th>
+              <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Read</th>
               <th scope="col" className="py-3 px-4 sm:py-4 sm:px-6">Delete</th>
             </tr>
           </thead>
           <tbody>
             {
               comments.slice(0, numToShow).map((comment, index) => (
-                <tr key={comment.id} className="border-t bg-neutral-50">
+                <tr key={comment.id} className="hover:bg-neutral-100 border-t bg-neutral-50">
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{index + 1}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{dateFormat(comment.createdAt)}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
@@ -70,6 +100,9 @@ const Comments = () => {
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     {comment.likes}
+                  </td>
+                  <td className="py-3 px-4 sm:py-4 sm:px-6">
+                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => readStory(comment.storyId)}>Read</button>
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
                     <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => handleDelete(comment.id, comment.content)}>Delete</button>
