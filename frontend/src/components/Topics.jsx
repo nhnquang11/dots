@@ -176,18 +176,18 @@ const Topics = () => {
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{topic.name}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">{countStories(topic.id)}</td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6 flex justify-end">
-                    <div className='min-w-56  flex justify-end'>
+                    <div className='sm:min-w-56  flex justify-end'>
                       {
                         editList.includes(topic.id) ? (
                           <TopicUpdate defaultValue={topic.name} onCancel={() => setEditList(editList.filter(id => id !== topic.id))} onSave={(content) => handleSaveOnClick(topic.id, content)} />
                         ) : (
-                          <button className="border border-neutral-600 rounded px-2 py-1 text-xs bg-neutral-900 text-neutral-50 hover:bg-neutral-700" onClick={() => setEditList(editList.concat(topic.id))}>Edit</button>
+                          <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => setEditList(editList.concat(topic.id))}>Edit</button>
                         )
                       }
                     </div>
                   </td>
                   <td className="py-3 px-4 sm:py-4 sm:px-6">
-                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs bg-neutral-900 text-neutral-50 hover:bg-neutral-700" onClick={() => handleDeleteOnClick(topic.id, topic.name)}>Delete</button>
+                    <button className="border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => handleDeleteOnClick(topic.id, topic.name)}>Delete</button>
                   </td>
                 </tr>
               ))

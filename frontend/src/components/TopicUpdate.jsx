@@ -18,8 +18,8 @@ const TopicUpdate = ({ defaultValue, onCancel, onSave }) => {
         onChange={(e) => setContent(e.target.value)}
         onKeyPress={handleKeyPress}
       />
-      <button className="ml-1 border border-neutral-600 rounded px-2 text-xs text-neutral-800 hover:bg-neutral-200" onClick={onCancel}>Cancel</button>
-      <button className="ml-1 rounded px-2 text-xs border border-neutral-800 hover:border-neutral-600 text-neutral-50 bg-neutral-800 hover:bg-neutral-700" onClick={() => onSave(content)}>Save</button>
+      <button className="ml-1 border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={() => onSave(content)}>Save</button>
+      <button className="ml-1 border border-neutral-600 rounded px-2 py-1 text-xs text-neutral-800 hover:bg-neutral-800 hover:text-neutral-50" onClick={onCancel}>Cancel</button>
     </div>
   )
 }
