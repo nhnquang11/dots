@@ -15,6 +15,7 @@ import OhNo from "./pages/OhNo";
 import Notification from "./components/Notification";
 import { useDispatch } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
+import Search from "./pages/Search";
 
 const App = () => {
   const user = useSelector(state => state.user)
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/sign-up" element={user ? <Navigate replace to='/' /> : <SignUp />} />
         <Route path="/sign-in" element={user ? <Navigate replace to='/' /> : <SignIn />} />
         <Route path="/story/:id" element={<Story />} />
+        <Route path="/search" element={<Search />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

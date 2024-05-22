@@ -4,12 +4,16 @@ import { Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import { signOut } from "../reducers/userReducer"
 import { useNavigate } from "react-router-dom"
+import { useField } from "../hooks"
+import { useRef } from "react"
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const query = useField('text')
+  const inputRef = useRef(null);
 
   const handleDropdownOnClick = () => {
     setIsDropdownOpen(!isDropdownOpen)
@@ -20,6 +24,14 @@ const Header = () => {
     setIsDropdownOpen(false)
     navigate('/')
   }
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      query.reset()
+      inputRef.current.blur();
+      navigate(`/search?q=${e.target.value}`)
+    }
+  };
 
   return (
     <nav>
@@ -32,6 +44,9 @@ const Header = () => {
         {/* Search bar */}
         <div className="max-w-lg grow flex justify-center items-center">
           <input
+            {...query.getAttributes()}
+            ref={inputRef}
+            onKeyPress={handleKeyPress}
             type="search"
             className="w-full font-serif font-hairline text-sm rounded border border-neutral-400 placeholder-neutral-500 bg-transparent px-3 py-1 transition duration-200 ease-in-out focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
             placeholder="Search" />

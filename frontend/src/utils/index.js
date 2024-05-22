@@ -53,3 +53,19 @@ export const zToA = (a, b) => {
   if (titleA < titleB) return 1;
   return 0;
 }
+
+export const likesMostToLeast = (a, b) => {
+  return b.likes - a.likes;
+}
+
+export const likesLeastToMost = (a, b) => {
+  return a.likes - b.likes;
+}
+
+export const viewsMostToLeast = (a, b) => {
+  return b.views - a.views;
+}
+
+export const viewsLeastToMost = (a, b) => {
+  return a.views - b.views;
+}

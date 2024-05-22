@@ -2,9 +2,9 @@ import { useEffect, useState } from "react"
 import StoryCard from "./StoryCard"
 import storyService from "../services/storyService"
 import topicService from "../services/topicService"
-import { newestToOldest, oldestToNewest, aToZ, zToA } from "../utils"
+import { newestToOldest, oldestToNewest, aToZ, zToA, likesLeastToMost, likesMostToLeast, viewsLeastToMost, viewsMostToLeast } from "../utils"
 
-const StorySection = () => {
+const StorySection = ({ initialStories }) => {
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false)
   const [stories, setStories] = useState([])
@@ -15,10 +15,16 @@ const StorySection = () => {
   const [numToShow, setNumToShow] = useState(6)
 
   useEffect(() => {
-    storyService.getAll().then((data) => {
-      setStories(data)
-      setStoriesToShow(data.sort(newestToOldest))
-    })
+    if (initialStories) {
+      setStories(initialStories)
+      setStoriesToShow(initialStories.sort(newestToOldest))
+    } else {
+      storyService.getAll().then((data) => {
+        setStories(data)
+        setStoriesToShow(data.sort(newestToOldest))
+      })
+    }
+
     topicService.getAll().then((data) => {
       setTopics(data.sort((a, b) => {
         if (a.name < b.name) return -1
@@ -59,6 +65,14 @@ const StorySection = () => {
       return storiesList.sort(aToZ)
     } else if (radioValue === 'cba') {
       return storiesList.sort(zToA)
+    } else if (radioValue === 'view-high-low') {
+      return storiesList.sort(viewsMostToLeast)
+    } else if (radioValue === 'view-low-hight') {
+      return storiesList.sort(viewsLeastToMost)
+    } else if (radioValue === 'clap-high-low') {
+      return storiesList.sort(likesMostToLeast)
+    } else if (radioValue === 'clap-low-high') {
+      return storiesList.sort(likesLeastToMost)
     }
   }
 
@@ -97,7 +111,7 @@ const StorySection = () => {
   return (
     <div className="flex flex-col items-center mt-16 lg:mt-20">
       <div className="flex justify-between items-center gap-x-2">
-        <div className="pl-3 pr-6 font-serif text-neutral-900">{stories.length} stories</div>
+        <div className="pl-3 pr-6 font-serif text-neutral-900">{storiesToShow.length} stories</div>
 
         {/* Filter */}
         <div className="relative ">
@@ -158,6 +172,22 @@ const StorySection = () => {
                   <div className="py-2 flex items-center">
                     <input onChange={handleOptionChange} checked={radioValue === "cba"} id="cba" type="radio" value="cba" name="sort" className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" />
                     <label className="pl-3 font-serif cursor-pointer" htmlFor="cba">Alphabetical (Z-A)</label>
+                  </div>
+                  <div className="py-2 flex items-center">
+                    <input onChange={handleOptionChange} checked={radioValue === "view-high-low"} id="view-high-low" type="radio" value="view-high-low" name="sort" className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" />
+                    <label className="pl-3 font-serif cursor-pointer" htmlFor="view-high-low">Views (high -&gt; low)</label>
+                  </div>
+                  <div className="py-2 flex items-center">
+                    <input onChange={handleOptionChange} checked={radioValue === "view-low-hight"} id="view-low-hight" type="radio" value="view-low-hight" name="sort" className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" />
+                    <label className="pl-3 font-serif cursor-pointer" htmlFor="view-low-hight">Views (low -&gt; high)</label>
+                  </div>
+                  <div className="py-2 flex items-center">
+                    <input onChange={handleOptionChange} checked={radioValue === "clap-high-low"} id="clap-high-low" type="radio" value="clap-high-low" name="sort" className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" />
+                    <label className="pl-3 font-serif cursor-pointer" htmlFor="clap-high-low">Claps (high -&gt; low)</label>
+                  </div>
+                  <div className="py-2 flex items-center">
+                    <input onChange={handleOptionChange} checked={radioValue === "clap-low-high"} id="clap-low-high" type="radio" value="clap-low-high" name="sort" className="cursor-pointer accent-neutral-950 hover:accent-neutral-500" />
+                    <label className="pl-3 font-serif cursor-pointer" htmlFor="clap-low-high">Claps (low -&gt; high)</label>
                   </div>
                 </div>
                 <hr className="mt-2" />
