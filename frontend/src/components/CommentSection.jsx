@@ -141,7 +141,7 @@ const CommentSection = ({ storyId, comments, setStory }) => {
                     <span className="ml-1 text-sm text-neutral-700">{likes[index]} Likes</span>
                   </div>
                   {
-                    comment.authorId && user.id === comment.authorId.id && (
+                    comment.authorId && user && user.id === comment.authorId.id && (
                       <div>
                         <button onClick={() => setEditList([...editList, comment.id])} value="comments" className="leading-8 font-extralight text-sm font-serif px-1 rounded text-neutral-500 hover:text-neutral-600 transition duration-100 ease-in-out">Edit</button>
                         <span className="text-neutral-500">|</span>
@@ -150,7 +150,7 @@ const CommentSection = ({ storyId, comments, setStory }) => {
                     )
                   }
                   {
-                    user.isAdmin && !(comment.authorId && user.id === comment.authorId.id) && (
+                    user && user.isAdmin && !(comment.authorId && user.id === comment.authorId.id) && (
                       <div>
                         <button onClick={() => handleDeleteOnClick(index, comment.id, comment.content)} value="comments" className="leading-8 font-extralight text-sm font-serif px-1 rounded text-neutral-500 hover:text-neutral-600 transition duration-100 ease-in-out">Delete</button>
                       </div>
