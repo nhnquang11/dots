@@ -149,6 +149,13 @@ const CommentSection = ({ storyId, comments, setStory }) => {
                       </div>
                     )
                   }
+                  {
+                    user.isAdmin && !(comment.authorId && user.id === comment.authorId.id) && (
+                      <div>
+                        <button onClick={() => handleDeleteOnClick(index, comment.id, comment.content)} value="comments" className="leading-8 font-extralight text-sm font-serif px-1 rounded text-neutral-500 hover:text-neutral-600 transition duration-100 ease-in-out">Delete</button>
+                      </div>
+                    )
+                  }
                 </div>
                 {
                   editList.includes(comment.id) && (
