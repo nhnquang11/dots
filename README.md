@@ -8,9 +8,9 @@
 
 - **Demo site:** [dots-the-chaos.fly.dev](https://dots-the-chaos.fly.dev/).
 - **Documentation:** [dots-the-chaos-docs.vercel.app](https://dots-the-chaos-docs.vercel.app/).
-- **Frontend:** React, Javascript, Tailwind CSS with Vite.
-- **Backend:** Express.js.
+- **Frontend:** React and Tailwind CSS with Vite.
 - **Database:** MongoDB.
+- **Media Storage**: Cloudinary.
 - **Authentication:** Google OAuth.
 - **Documentation**: Nextra.
 - **Deployment:** Fly.io. 
