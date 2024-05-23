@@ -8,6 +8,6 @@ storyRouter.get('/', getStories)
 storyRouter.get('/:id', getStory)
 storyRouter.put('/:id', userExtractor, updateStory)
 storyRouter.put('/:id/comment', userExtractor, addCommentToStory)
-storyRouter.delete('/:id', deleteStory)
+storyRouter.delete('/:id', userExtractor, deleteStory)
 
 module.exports = storyRouter

@@ -19,7 +19,7 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-uploadRouter.post('/', upload.single('image'), async (req, res) => {
+uploadRouter.post('/', userExtractor, upload.single('image'), async (req, res) => {
   try {
     // console.log(req.file);
     // Upload image to Cloudinary

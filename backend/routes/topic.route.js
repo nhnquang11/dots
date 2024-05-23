@@ -2,10 +2,10 @@ const { createTopic, getTopics, deleteTopic, getTopic, updateTopic } = require('
 const express = require('express')
 const topicRouter = express.Router()
 
-topicRouter.post('/', createTopic)
+topicRouter.post('/', userExtractor, createTopic)
 topicRouter.get('/', getTopics)
 topicRouter.get('/:id', getTopic)
-topicRouter.delete('/:id', deleteTopic)
-topicRouter.put('/:id', updateTopic)
+topicRouter.delete('/:id', userExtractor, deleteTopic)
+topicRouter.put('/:id', userExtractor, updateTopic)
 
 module.exports = topicRouter

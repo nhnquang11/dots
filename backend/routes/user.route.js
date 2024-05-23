@@ -5,7 +5,7 @@ const userRouter = express.Router();
 userRouter.get('/', getUsers)
 userRouter.get('/:id', getUser)
 userRouter.post('/', createUser)
-userRouter.delete('/:id', deleteUser)
-userRouter.put('/:id', updateUser)
+userRouter.delete('/:id', userExtractor, deleteUser)
+userRouter.put('/:id', userExtractor, updateUser)
 
 module.exports = userRouter

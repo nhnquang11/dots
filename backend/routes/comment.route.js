@@ -6,7 +6,7 @@ const commentRouter = express.Router()
 commentRouter.post('/', userExtractor, createComment)
 commentRouter.get('/', getComments)
 commentRouter.get('/:id', getComment)
-commentRouter.put('/:id', updateComment)
-commentRouter.delete('/:id', deleteComment)
+commentRouter.put('/:id', userExtractor, updateComment)
+commentRouter.delete('/:id', userExtractor, deleteComment)
 
 module.exports = commentRouter
