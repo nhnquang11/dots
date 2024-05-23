@@ -21,8 +21,11 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).json({ error: `${key} ${value} already exists.` })
   } else if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({ error: 'Invalid token.' })
+  } else {
+    console.log(error.message)
+    return response.status(500).json({ error: `Something went wrong. ${error.message}`})
   }
-  next(error)
+  // next(error)
 }
 
 const tokenExtractor = (request, response, next) => {

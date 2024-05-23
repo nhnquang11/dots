@@ -14,7 +14,7 @@ const Users = () => {
 
   useEffect(() => {
     userSevice.getAll().then((data) => {
-      setUsers(data.sort(newestToOldest))
+      setUsers(data.sort((a, b) => a.username.localeCompare(b.username)))
     })
   }, [])
 

@@ -27,7 +27,7 @@ const NewStory = () => {
 
   useEffect(() => {
     topicService.getAll().then((data) => {
-      setTopics(data)
+      setTopics(data.sort((a, b) => a.name.localeCompare(b.name)))
     })
   }, [])
 
