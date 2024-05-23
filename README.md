@@ -13,14 +13,4 @@
 - **Database:** MongoDB.
 - **Authentication:** Google OAuth.
 - **Documentation**: Nextra.
-- **Deployment:** Fly.io.
-
-## 1. Getting Started
-
-Copy `.env.example` to `.env` and fill in the environment variables.
-
-- `VITE_FIREBASE*`: Firebase configuration. See [here]().
-- `MONGO_URI`: MongoDB URI.
-- `PORT`: Server Port
-- `SECRET`: Secret key for JWT
-- `CLOUDINARY*`: Cloudinary configuration. See [here](). 
+- **Deployment:** Fly.io. 
