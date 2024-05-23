@@ -7,7 +7,7 @@
 <img align="center" alt="Cafeteria" style="max-width: 500px; height: auto;" src="public/home.svg"/>
 
 - **Demo site:** [dots-the-chaos.fly.dev](https://dots-the-chaos.fly.dev/).
-- **Documentation:** [dots-the-chaos.vercel.app](https://dots-the-chaos.vercel.app/).
+- **Documentation:** [dots-the-chaos-docs.vercel.app](https://dots-the-chaos-docs.vercel.app/).
 - **Frontend:** React, Javascript, Tailwind CSS with Vite.
 - **Database:** MongoDB.
 - **Authentication:** Google OAuth.
