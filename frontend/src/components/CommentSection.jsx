@@ -51,11 +51,11 @@ const CommentSection = ({ storyId, comments }) => {
 
   const postComment = () => {
     commentService.post({ storyId, content: comment.value }, user.token).then(data => {
+      setStoryComments([...storyComments, data])
+      setLiked([...liked, false])
+      setLikes([...likes, 0])
       comment.reset()
       storyService.addCommentToStory(storyId, { commentId: data.id }, user.token).then((story) => {
-        setStoryComments(story.comments)
-        setLiked([...liked, false])
-        setLikes(story.comments.map(comment => comment.likes))
         broadcastStoryUpdate()
       })
     })
@@ -112,10 +112,10 @@ const CommentSection = ({ storyId, comments }) => {
   }
 
   const deleteComment = (id, index) => {
+    setStoryComments(storyComments.filter(comment => comment.id !== id))
+    setLiked(liked.filter((like, i) => i !== index))
+    setLikes(likes.filter((like, i) => i !== index))
     commentService.remove(id, user.token).then(() => {
-      setStoryComments(storyComments.filter(comment => comment.id !== id))
-      setLiked(liked.filter((like, i) => i !== index))
-      setLikes(likes.filter((like, i) => i !== index))
       broadcastStoryUpdate()
     })
     setModalId(null)
