@@ -11,6 +11,10 @@ import ConfirmationModal from './ConfirmationModal'
 import { useCallback } from 'react';
 import useWebSocket from 'react-use-websocket';
 
+const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+const hostname = window.location.hostname;
+const port = window.location.port ? `:${window.location.port === "5173" ? 3001 : window.location.port}` : '';
+
 const CommentSection = ({ storyId, comments }) => {
   const user = useSelector((state) => state.user)
   const [storyComments, setStoryComments] = useState([...comments])
@@ -24,7 +28,7 @@ const CommentSection = ({ storyId, comments }) => {
   const [modalId, setModalId] = useState(null)
   const [modalIndex, setModalIndex] = useState(null)
   const [modalMessage, setModalMessage] = useState(null)
-  const [socketUrl, setSocketUrl] = useState('ws://localhost:3001');
+  const [socketUrl, setSocketUrl] = useState(`${protocol}${hostname}${port}`);
   const { sendMessage, lastMessage } = useWebSocket(socketUrl, {
     share: true,
   });
