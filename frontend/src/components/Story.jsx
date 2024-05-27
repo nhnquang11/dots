@@ -124,7 +124,7 @@ const Story = () => {
         </div>
       </div>
       <div id="comment-section" className="mt-16"></div>
-      <CommentSection storyId={id} comments={story.comments} setStory={setStory} />
+      <CommentSection storyId={id} comments={story.comments} />
     </div>
   )
 }

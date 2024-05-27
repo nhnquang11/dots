@@ -2,14 +2,16 @@ import { useSelector } from "react-redux"
 import { useField } from "../hooks"
 import commentService from "../services/commentService"
 import storyService from "../services/storyService"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { dateFormat } from "../utils"
 import { useNavigate } from "react-router-dom"
 import Notification from "./Notification"
 import CommentEditor from "./CommentEditor"
 import ConfirmationModal from './ConfirmationModal'
+import { useCallback } from 'react';
+import useWebSocket from 'react-use-websocket';
 
-const CommentSection = ({ storyId, comments, setStory }) => {
+const CommentSection = ({ storyId, comments }) => {
   const user = useSelector((state) => state.user)
   const [storyComments, setStoryComments] = useState([...comments])
   const [liked, setLiked] = useState(new Array(comments.length).fill(false))
@@ -22,21 +24,44 @@ const CommentSection = ({ storyId, comments, setStory }) => {
   const [modalId, setModalId] = useState(null)
   const [modalIndex, setModalIndex] = useState(null)
   const [modalMessage, setModalMessage] = useState(null)
+  const [socketUrl, setSocketUrl] = useState('ws://localhost:3001');
+  const { sendMessage, lastMessage } = useWebSocket(socketUrl, {
+    share: true,
+  });
+
+  const broadcastStoryUpdate = useCallback(() => {
+    sendMessage(JSON.stringify({ storyId }));
+  }, [sendMessage, storyId]);
+
+  useEffect(() => {
+    if (lastMessage) {
+      const storyId = JSON.parse(lastMessage.data.toString()).storyId
+      storyService.getOne(storyId).then((story) => {
+        setStoryComments(story.comments)
+        setLiked(new Array(story.comments.length).fill(false))
+        setLikes(story.comments.map(comment => comment.likes))
+      })
+    }
+  }, [lastMessage])
+
 
   const postComment = () => {
     commentService.post({ storyId, content: comment.value }, user.token).then(data => {
-      setStoryComments([...storyComments, { ...data }])
-      setLiked([...liked, false])
-      setLikes([...likes, data.likes])
       comment.reset()
-      storyService.addCommentToStory(storyId, { commentId: data.id }, user.token)
+      storyService.addCommentToStory(storyId, { commentId: data.id }, user.token).then((story) => {
+        setStoryComments(story.comments)
+        setLiked([...liked, false])
+        setLikes(story.comments.map(comment => comment.likes))
+        broadcastStoryUpdate()
+      })
     })
   }
 
   const saveComment = (id, content) => {
-    commentService.update(id, { content: content }, user.token).then(data => {
+    commentService.update(id, { content: content }, user.token).then(() => {
       setStoryComments(storyComments.map(comment => comment.id === id ? { ...comment, content } : comment))
       setEditList(editList.filter(commentId => commentId !== id))
+      broadcastStoryUpdate()
     })
   }
 
@@ -87,6 +112,7 @@ const CommentSection = ({ storyId, comments, setStory }) => {
       setStoryComments(storyComments.filter(comment => comment.id !== id))
       setLiked(liked.filter((like, i) => i !== index))
       setLikes(likes.filter((like, i) => i !== index))
+      broadcastStoryUpdate()
     })
     setModalId(null)
     setModalIndex(null)

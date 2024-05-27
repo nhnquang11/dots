@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
 import Search from "./pages/Search";
 
+
 const App = () => {
   const user = useSelector(state => state.user)
   console.log(user)

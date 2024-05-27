@@ -12,6 +12,8 @@ const loginRouter = require("./routes/login.route");
 const uploadRouter = require("./routes/upload.route");
 const analyticRouter = require("./routes/analytic.route");
 const cors = require("cors");
+const http = require("http");
+const WebSocket = require("ws");
 
 mongoose
   .connect(config.MONGO_URI)
@@ -23,8 +25,36 @@ mongoose
   });
 
 const app = express();
-app.use(cors());
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
+function broadcastMessage(message) {
+  const parsedMessage = JSON.parse(message.toString());
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      try {
+        client.send(JSON.stringify(parsedMessage));
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+    }
+  });
+}
+
+wss.on("connection", (ws) => {
+  console.log("New client connected");
+
+  ws.on("message", (message) => {
+    console.log("Received:", JSON.parse(message.toString()));
+    broadcastMessage(message);
+  });
+
+  ws.on("close", () => {
+    console.log("Client disconnected");
+  });
+});
+
+app.use(cors());
 app.use(express.json());
 app.use(middleware.tokenExtractor);
 app.use(middleware.requestLogger);
@@ -49,4 +79,4 @@ app.get("*", (req, res) => {
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
-module.exports = app;
+module.exports = { server, broadcastMessage };
