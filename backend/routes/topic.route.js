@@ -1,4 +1,5 @@
 const { createTopic, getTopics, deleteTopic, getTopic, updateTopic } = require('../controllers/topic.controller')
+const { userExtractor } = require('../utils/middleware')
 const express = require('express')
 const topicRouter = express.Router()
 

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const { userExtractor } = require('../utils/middleware')
 const uploadRouter = express.Router();
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');

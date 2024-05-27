@@ -1,4 +1,5 @@
 const { createUser, getUsers, getUser, deleteUser, updateUser } = require('../controllers/user.controller')
+const { userExtractor } = require('../utils/middleware')
 const express = require('express');
 const userRouter = express.Router();
 
