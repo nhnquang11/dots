@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react"
-
 const Notification = ({ message, type, onClose }) => {
   let style;
   if (type == "succes") {

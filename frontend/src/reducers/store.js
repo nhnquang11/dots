@@ -1,21 +1,20 @@
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import userReducer from "./userReducer";
+import notificationReducer from "./notificationReducer";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import userReducer from './userReducer'
-import notificationReducer from './notificationReducer';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   user: userReducer,
   notification: notificationReducer,
-})
+});
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  version:1
-}
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+  version: 1,
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
@@ -25,4 +24,4 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store)
+export const persistor = persistStore(store);
