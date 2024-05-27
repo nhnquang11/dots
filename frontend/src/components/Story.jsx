@@ -84,9 +84,9 @@ const Story = () => {
       {message && <Notification onClose={notiOnClose} message={message} />}
       {modalId && modalMessage && <ConfirmationModal message={modalMessage} handleClose={handleModalOnClose} handleSubmit={() => deleteStory(modalId)} />}
       <div className="flex flex-col items-center text-center px-5 mt-16 md:mt-28">
-        <p className="font-serif text-neutral-600 mb-3">{dateFormat(story.createdAt)}</p>
-        <h className="font-serif text-neutral-800 text-5xl md:text-6xl leading-[50px] md:leading-[70px] max-w-4xl">{story.title}</h>
-        <p className="font-serif text-neutral-800 text-xl md:text-2xl leading-7 md:leading-9 max-w-xl mt-6">{story.description}</p>
+        <p datatest-id="date" className="font-serif text-neutral-600 mb-3">{dateFormat(story.createdAt)}</p>
+        <h datatest-id="title" className="font-serif text-neutral-800 text-5xl md:text-6xl leading-[50px] md:leading-[70px] max-w-4xl">{story.title}</h>
+        <p datatest-id="desciption" className="font-serif text-neutral-800 text-xl md:text-2xl leading-7 md:leading-9 max-w-xl mt-6">{story.description}</p>
         <div className="mt-6 flex flex-wrap gap-2 justify-center items-center">
           {
             story.topics.map((topic) => {

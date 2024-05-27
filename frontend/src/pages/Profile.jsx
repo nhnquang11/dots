@@ -99,15 +99,15 @@ const Profile = () => {
           </div>
           <div className="max-w-md w-full">
             <label htmlFor="username" className="font-serif block mb-2 text-sm font-semibold text-neutral-900">Username</label>
-            <input {...username.getAttributes()} type="text" name="username" id="username" className="font-serif bg-gray-50 border border-neutral-300 text-neutral-900 text-sm rounded-lg block w-full p-2.5 focus:outline-neutral-500 focus:outline-[0.5px]" required="" />
+            <input datatest-id="username-input" {...username.getAttributes()} type="text" name="username" id="username" className="font-serif bg-gray-50 border border-neutral-300 text-neutral-900 text-sm rounded-lg block w-full p-2.5 focus:outline-neutral-500 focus:outline-[0.5px]" required="" />
           </div>
           <div className="max-w-md w-full">
             <label htmlFor="name" className="font-serif block mb-2 text-sm font-semibold text-neutral-900">Name</label>
-            <input {...name.getAttributes()} type="text" name="name" id="name" className="font-serif bg-gray-50 border border-neutral-300 text-neutral-900 text-sm rounded-lg block w-full p-2.5 focus:outline-neutral-500 focus:outline-[0.5px]" required="" />
+            <input datatest-id="name-input" {...name.getAttributes()} type="text" name="name" id="name" className="font-serif bg-gray-50 border border-neutral-300 text-neutral-900 text-sm rounded-lg block w-full p-2.5 focus:outline-neutral-500 focus:outline-[0.5px]" required="" />
           </div>
           <div className="max-w-md w-full">
             <label htmlFor="email" className="font-serif block mb-2 text-sm font-semibold text-neutral-900">Email</label>
-            <input {...email.getAttributes()} type="text" name="email" id="email" className="font-serif bg-gray-50 border border-neutral-300 text-neutral-900 text-sm rounded-lg block w-full p-2.5 focus:outline-neutral-500 focus:outline-[0.5px]" required="" />
+            <input datatest-id="email-input" {...email.getAttributes()} type="text" name="email" id="email" className="font-serif bg-gray-50 border border-neutral-300 text-neutral-900 text-sm rounded-lg block w-full p-2.5 focus:outline-neutral-500 focus:outline-[0.5px]" required="" />
           </div>
           <div className="max-w-md w-full">
             <label htmlFor="password" className="font-serif block mb-2 text-sm font-semibold text-neutral-900">Password</label>

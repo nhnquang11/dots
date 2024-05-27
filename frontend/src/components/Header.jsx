@@ -54,7 +54,7 @@ const Header = () => {
 
         {
           !user &&
-          <Link to='sign-in' className="flex justify-center text-center items-center h-8 text-xs font-semibold font-serif px-5 rounded bg-neutral-50 border-[1.2px] border-neutral-900 text-neutral-900 shadow-sm hover:bg-neutral-900 hover:text-neutral-50 transition duration-200 ease-in-out">
+          <Link datatest-id="login-button" to='sign-in' className="flex justify-center text-center items-center h-8 text-xs font-semibold font-serif px-5 rounded bg-neutral-50 border-[1.2px] border-neutral-900 text-neutral-900 shadow-sm hover:bg-neutral-900 hover:text-neutral-50 transition duration-200 ease-in-out">
             Log in
           </Link>
         }
@@ -64,7 +64,7 @@ const Header = () => {
           user &&
           <div className="relative z-10">
             <div className="flex justify-center align-center">
-              <button type="button" onClick={handleDropdownOnClick}>
+              <button datatest-id="dropdown-btn" type="button" onClick={handleDropdownOnClick}>
                 <img className="h-8 w-8 rounded-full object-cover" src={user.profilePic} />
               </button>
             </div>
@@ -72,11 +72,11 @@ const Header = () => {
             {
               isDropdownOpen &&
               <div className="flex flex-col absolute w-48 bg-neutral-50 shadow-sm text-sm rounded border right-0 top-9 font-serif font-extralight text-neutral-500">
-                <div className="py-3 pl-6 flex justify-start items-center text-neutral-600 font-semibold">{user.name}</div>
+                <div datatest-id="name-div" className="py-3 pl-6 flex justify-start items-center text-neutral-600 font-semibold">{user.name}</div>
                 <hr />
                 <div className="flex flex-col py-4 gap-4">
-                  <Link onClick={() => setIsDropdownOpen(false)} to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
-                  <Link onClick={() => setIsDropdownOpen(false)} to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
+                  <Link datatest-id="write-link" onClick={() => setIsDropdownOpen(false)} to="/new-story" className="px-6 hover:text-neutral-950">Write</Link>
+                  <Link datatest-id="profile-link" onClick={() => setIsDropdownOpen(false)} to="/profile" className="px-6 hover:text-neutral-950">Profile</Link>
                   <Link onClick={() => setIsDropdownOpen(false)} to="/dashboard" className="px-6 hover:text-neutral-950">Dashboard</Link>
                 </div>
                 <hr />
