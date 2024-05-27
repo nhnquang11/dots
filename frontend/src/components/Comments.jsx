@@ -5,9 +5,10 @@ import ConfirmationModal from './ConfirmationModal'
 import { useNavigate } from "react-router-dom"
 import Notification from "./Notification"
 import { newestToOldest } from "../utils"
-
+import { useSelector } from "react-redux"
 
 const Comments = () => {
+  const user = useSelector((state) => state.user)
   const [comments, setComments] = useState([])
   const [numToShow, setNumToShow] = useState(5)
   const [message, setMessage] = useState(null)
@@ -37,7 +38,7 @@ const Comments = () => {
   }
 
   const deleteComment = (id) => {
-    commentService.remove(id).then(() => {
+    commentService.remove(id, user.token).then(() => {
       setComments(comments.filter(comment => comment.id !== id))
     })
     handleClose()

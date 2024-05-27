@@ -6,8 +6,10 @@ import { dateFormat } from "../utils"
 import { newestToOldest } from "../utils"
 import { useNavigate } from "react-router-dom"
 import Notification from "./Notification"
+import { useSelector } from "react-redux"
 
 const Overview = () => {
+  const user = useSelector((state) => state.user)
   const [stories, setStories] = useState([])
   const [traffic, setTraffic] = useState(null)
   const [comments, setComments] = useState([])
@@ -21,7 +23,7 @@ const Overview = () => {
     storyService.getAll().then((data) => {
       setStories(data.sort(newestToOldest))
     })
-    trafficService.getTraffic().then((data) => {
+    trafficService.getTraffic(user.token).then((data) => {
       setTraffic(data.count)
     })
     commentService.getAll().then((data) => {

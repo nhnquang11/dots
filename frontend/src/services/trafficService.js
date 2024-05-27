@@ -1,10 +1,13 @@
 import axios from "axios";
 
-const baseUrl = '/api/analytic'
+const baseUrl = "/api/analytic";
 
-const getTraffic = async () => {
-    const response = await axios.get(baseUrl)
-    return response.data
-}
+const getTraffic = async (token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(baseUrl, config);
+  return response.data;
+};
 
-export default { getTraffic }
+export default { getTraffic };
